@@ -1,5 +1,6 @@
 - hosts: instack_host
   roles:
     - yum_repos
+    - stack_user
   vars:
     - instack_host_type: host

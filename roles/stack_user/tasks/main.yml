@@ -1,0 +1,27 @@
+- name: create the stack user
+  user:
+    name: stack
+    state: present
+
+- name: allow passwordless sudo for the stack user
+  template:
+    src: sudoers-stack.j2
+    dest: /etc/sudoers.d/stack
+    mode: 0440
+
+- name: allow the stack user to manage libvirt
+  template:
+    src: stack-libvirt.pkla.j2
+    dest: /etc/polkit-1/localauthority/50-local.d/50-stack-libvirt.pkla
+    mode: 0644
+
+- name: set LIBVIRT_DEFAULT_URI for the stack user
+  lineinfile:
+    dest: /home/stack/.bashrc
+    regexp: '^export LIBVIRT_DEFAULT_URI='
+    line: 'export LIBVIRT_DEFAULT_URI="qemu:///system"'
+    insertafter: EOF
+    create: yes
+    mode: 0644
+    owner: stack
+    group: stack
