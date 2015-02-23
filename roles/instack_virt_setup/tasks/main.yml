@@ -27,3 +27,19 @@
     chdir: "{{ stack_user_home }}"
   sudo: yes
   sudo_user: stack
+
+- name: fact instack_vm_defined
+  shell: virsh list --all | grep instack
+  failed_when: false
+  changed_when: false
+  register: instack_vm_defined
+
+- name: run instack-virt-setup
+  shell: |
+    {{ instack_host_env }}
+    instack-virt-setup 2>&1 | tee /tmp/instack-virt-setup.out
+  args:
+    chdir: "{{ stack_user_home }}"
+  sudo: yes
+  sudo_user: stack
+  when: instack_vm_defined.rc != 0
