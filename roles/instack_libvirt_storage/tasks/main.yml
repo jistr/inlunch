@@ -1,0 +1,4 @@
+---
+- name: create instack storage pool
+  include: instack_pool.yml
+  when: instack_host_libvirt_storage_path is defined and instack_host_libvirt_storage_path

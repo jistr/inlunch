@@ -2,6 +2,7 @@
   roles:
     - yum_repos
     - stack_user
+    - instack_libvirt_storage
     - instack_virt_setup
   vars:
     - instack_host_type: host
