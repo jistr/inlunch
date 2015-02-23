@@ -1,6 +1,7 @@
 - name: create the stack user
   user:
     name: stack
+    home: "{{ stack_user_home }}"
     state: present
 
 - name: allow passwordless sudo for the stack user
@@ -17,7 +18,7 @@
 
 - name: set LIBVIRT_DEFAULT_URI for the stack user
   lineinfile:
-    dest: /home/stack/.bashrc
+    dest: "{{ stack_user_home }}/.bashrc"
     regexp: '^export LIBVIRT_DEFAULT_URI='
     line: 'export LIBVIRT_DEFAULT_URI="qemu:///system"'
     insertafter: EOF

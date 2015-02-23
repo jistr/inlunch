@@ -13,3 +13,11 @@ instack_uc_repos_program_cmd:
 # then the pool location will not move
 instack_host_libvirt_storage_pool: instack
 instack_host_libvirt_storage_path: /home/vms_instack
+
+instack_host_node_dist: fedora
+# instack_host_node_dist: rhel7
+# instack_host_dib_yum_repo: /etc/yum.repos.d/my-openstack-repo.repo
+# instack_host_dib_cloud_images: http://my-images
+# instack_host_dib_base_image: my-os-image.x86_64.qcow2
+
+instack_host_env_extra:
