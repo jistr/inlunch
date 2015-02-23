@@ -1,0 +1,4 @@
+- name: install instack-undercloud
+  yum:
+    name: instack-undercloud
+    state: installed

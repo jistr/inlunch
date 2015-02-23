@@ -4,3 +4,6 @@
 - name: do a repo setup using a program
   include: repos_program.yml
   when: instack_current_repos_program_rpm and instack_current_repos_program_cmd
+
+- name: clean yum cache
+  shell: yum clean all
