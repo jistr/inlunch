@@ -1,0 +1,6 @@
+- name: set current repo vars for host type
+  include: current_vars.yml
+
+- name: do a repo setup using a program
+  include: repos_program.yml
+  when: instack_current_repos_program_rpm and instack_current_repos_program_cmd

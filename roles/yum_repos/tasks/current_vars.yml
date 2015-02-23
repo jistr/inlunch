@@ -1,0 +1,11 @@
+- name: set current repo vars for host
+  set_fact:
+    instack_current_repos_program_rpm: "{{ instack_host_repos_program_rpm }}"
+    instack_current_repos_program_cmd: "{{ instack_host_repos_program_cmd }}"
+  when: instack_host_type == 'host'
+
+- name: set current repo vars for undercloud
+  set_fact:
+    instack_current_repos_program_rpm: "{{ instack_uc_repos_program_rpm }}"
+    instack_current_repos_program_cmd: "{{ instack_uc_repos_program_cmd }}"
+  when: instack_host_type == 'uc'

@@ -1,0 +1,2 @@
+[instack_host]
+my_instack_machine.example.org  ansible_ssh_user=root
