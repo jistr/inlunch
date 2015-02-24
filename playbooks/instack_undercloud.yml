@@ -1,6 +1,7 @@
 - hosts: instack_host
   roles:
     - yum_repos
+    - tools
     - stack_user
     - instack_libvirt_storage
     - instack_virt_setup

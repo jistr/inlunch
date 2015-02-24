@@ -7,6 +7,14 @@ instack_uc_repos_program_rpm:
 instack_uc_repos_program_cmd:
 
 
+### TOOLS SETUP ###
+
+tools_packages:
+  - screen
+  - tmux
+  - vim
+
+
 ### HOST SETUP ###
 
 # if set to an existing pool (e.g. 'default')
