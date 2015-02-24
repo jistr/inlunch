@@ -14,3 +14,11 @@
 
 - name: undercloud http forwarding
   include: http_forward.yml
+
+- name: add undercloud to ansible host inventory
+  add_host:
+    name: uc-{{ inventory_hostname }}
+    groups: instack_undercloud
+    ansible_ssh_host: "{{ inventory_hostname }}"
+    ansible_ssh_port: "{{ instack_host_uc_ssh_port }}"
+    ansible_ssh_user: root

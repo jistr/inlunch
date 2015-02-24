@@ -8,3 +8,10 @@
     - instack_uc_ip_and_forward
   vars:
     - instack_host_type: host
+
+- hosts: instack_undercloud
+  roles:
+    - yum_repos
+    - tools
+  vars:
+    - instack_host_type: uc
