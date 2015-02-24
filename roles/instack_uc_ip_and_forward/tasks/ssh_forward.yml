@@ -1,0 +1,15 @@
+- name: fact socat_uc_ssh_running
+  shell: ps aux | grep socat | grep {{ undercloud_ip }}:22 | grep -v grep
+  changed_when: false
+  failed_when: false
+  register: socat_uc_ssh_running
+
+- name: socat for undercloud ssh
+  shell: nohup socat TCP-LISTEN:{{ instack_host_uc_ssh_port }},fork,reuseaddr TCP:{{ undercloud_ip }}:22 &> /dev/null &
+  async: 2
+  poll: 2
+  when: socat_uc_ssh_running.rc != 0
+
+- name: ensure that socat for undercloud ssh is running
+  shell: ps aux | grep socat | grep {{ undercloud_ip }}:22 | grep -v grep
+  changed_when: false

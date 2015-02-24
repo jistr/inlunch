@@ -1,0 +1,15 @@
+- name: fact socat_uc_http_running
+  shell: ps aux | grep socat | grep {{ undercloud_ip }}:80 | grep -v grep
+  changed_when: false
+  failed_when: false
+  register: socat_uc_http_running
+
+- name: socat for undercloud http
+  shell: nohup socat TCP-LISTEN:{{ instack_host_uc_http_port }},fork,reuseaddr TCP:{{ undercloud_ip }}:80 &> /dev/null &
+  async: 2
+  poll: 2
+  when: socat_uc_http_running.rc != 0
+
+- name: ensure that socat for undercloud http is running
+  shell: ps aux | grep socat | grep {{ undercloud_ip }}:80 | grep -v grep
+  changed_when: false

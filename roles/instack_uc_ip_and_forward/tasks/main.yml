@@ -3,3 +3,14 @@
 
 - name: authorize keys in undercloud for ansible connection
   include: root_authorized_keys.yml
+
+- name: ensure socat is installed
+  yum:
+    name: socat
+    state: present
+
+- name: undercloud ssh forwarding
+  include: ssh_forward.yml
+
+- name: undercloud http forwarding
+  include: http_forward.yml
