@@ -1,0 +1,14 @@
+- name: fetch undercloud VM IP address
+  shell: cat /var/lib/libvirt/dnsmasq/default.leases | grep $(tripleo get-vm-mac instack) | awk '{print $3;}'
+  sudo_user: stack
+  sudo: yes
+  changed_when: false
+  register: undercloud_ip
+
+- name: set undercloud_ip fact
+  set_fact:
+    undercloud_ip: "{{ undercloud_ip.stdout }}"
+
+- name: print undercloud_ip
+  debug:
+    msg: "{{ undercloud_ip }}"

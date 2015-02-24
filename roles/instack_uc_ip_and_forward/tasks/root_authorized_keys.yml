@@ -1,0 +1,26 @@
+- name: make root user authorized keys accessible to stack
+  shell: cp /root/.ssh/authorized_keys {{ stack_user_home }}/root_authorized_keys
+
+- name: copy host authorized keys for matching in undercloud
+  shell: scp -o 'StrictHostKeyChecking=no' root_authorized_keys root@{{ undercloud_ip }}:/root/host_root_authorized_keys
+  sudo: yes
+  sudo_user: stack
+
+- name: fact undercloud_has_host_authorized_keys
+  shell: |
+    ssh -o 'StrictHostKeyChecking=no' root@{{ undercloud_ip }} \
+    'host_keys=$(cat /root/host_root_authorized_keys)
+     grep -zo "$host_keys" /root/.ssh/authorized_keys'
+  sudo: yes
+  sudo_user: stack
+  changed_when: false
+  failed_when: false
+  register: undercloud_has_host_authorized_keys
+
+- name: add host root authorized keys to undercloud root authorized keys
+  shell: |
+    ssh -o 'StrictHostKeyChecking=no' root@{{ undercloud_ip }} \
+    'cat /root/host_root_authorized_keys >> /root/.ssh/authorized_keys'
+  sudo: yes
+  sudo_user: stack
+  when: undercloud_has_host_authorized_keys.rc != 0

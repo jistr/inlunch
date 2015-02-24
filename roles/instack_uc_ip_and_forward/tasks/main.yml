@@ -1,0 +1,5 @@
+- name: fetch undercloud VM IP address
+  include: undercloud_ip.yml
+
+- name: authorize keys in undercloud for ansible connection
+  include: root_authorized_keys.yml
