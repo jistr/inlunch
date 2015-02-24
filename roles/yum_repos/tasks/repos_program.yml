@@ -1,7 +1,7 @@
+# yum module uses 'yum install' which errors out if there are no repos enabled
+# using shell to do 'yum localinstall' to work around the issue
 - name: install repo setup program
-  yum:
-    name: "{{ instack_current_repos_program_rpm }}"
-    state: present
+  shell: yum -y localinstall "{{ instack_current_repos_program_rpm }}"
 
 - name: run the repo setup program
   shell: "{{ instack_current_repos_program_cmd }}"
