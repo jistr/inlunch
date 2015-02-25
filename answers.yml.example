@@ -20,13 +20,19 @@ tools_packages:
 # if set to an existing pool (e.g. 'default')
 # then the pool location will not move
 instack_host_libvirt_storage_pool: instack
-instack_host_libvirt_storage_path: /home/vms_instack
+instack_host_libvirt_storage_path: /home/vms-instack
 
-instack_host_node_dist: fedora
-# instack_host_node_dist: rhel7
-# instack_host_dib_yum_repo: /etc/yum.repos.d/my-openstack-repo.repo
-# instack_host_dib_cloud_images: http://my-images
-# instack_host_dib_base_image: my-os-image.x86_64.qcow2
+# these key names translate directly to exported variable names,
+# which means keeping them uppercase is important
+instack_host_env_exports:
+  NODE_DIST: fedora
+  # NODE_DIST: rhel7
+  # RHOS: 1
+  # REG_METHOD: disable
+  # REG_HALT_UNREGISTER: 1
+  # DIB_YUM_REPO_CONF: /etc/yum.repos.d/my-dib-repo.repo
+  # DIB_CLOUD_IMAGES: http://my-base-images
+  # BASE_IMAGE_FILE: my-base-image.x86_64.qcow2
 
 instack_host_env_extra:
 

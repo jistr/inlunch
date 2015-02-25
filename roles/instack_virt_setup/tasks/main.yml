@@ -6,18 +6,16 @@
 - name: set instack_host_env
   set_fact:
     instack_host_env: |
-      export NODE_DIST={{ instack_host_node_dist }}
-      {% if instack_host_node_dist | match('^rhel') %}
-        export RHOS=1
-        export DIB_YUM_REPO_CONF={{ instack_host_dib_yum_repo }}
-        export DIB_CLOUD_IMAGES={{ instack_host_dib_cloud_images }}
-        export BASE_IMAGE_FILE={{ instack_host_dib_base_image }}
-        export REG_METHOD=disable
-        export REG_HALT_UNREGISTER=1
-      {% endif %}
       export LIBVIRT_VOL_POOL={{ instack_host_libvirt_storage_pool }}
+      {% for var_name in instack_host_env_exports %}
+        export {{ var_name }}="{{ instack_host_env_exports[var_name] }}"
+      {% endfor %}
       source /usr/libexec/openstack-tripleo/devtest_variables.sh
       {{ instack_host_env_extra if instack_host_env_extra is defined }}
+
+- name: print instack host environment
+  debug:
+    msg: "{{ instack_host_env }}"
 
 - name: install instack dependencies
   shell: |
