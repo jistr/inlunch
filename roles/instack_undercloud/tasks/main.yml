@@ -23,3 +23,11 @@
   sudo: yes
   sudo_user: stack
   when: undercloud_deployed.rc != 0
+
+- name: copy rc files from root to stack user
+  shell: |
+    cp /root/{{ item }} {{ stack_user_home }}/{{ item }}
+    chown stack:stack {{ stack_user_home }}/{{ item }}
+  with_items:
+    - stackrc
+    - tripleo-undercloud-passwords
