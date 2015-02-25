@@ -32,3 +32,9 @@ instack_host_env_extra:
 
 instack_host_uc_http_port: 80
 instack_host_uc_ssh_port: 2200
+
+
+### IMAGES SETUP ###
+
+# The path is relative to the playbooks directory. Absolute path works too.
+prebuilt_overcloud_images_dir: ../overcloud-images
