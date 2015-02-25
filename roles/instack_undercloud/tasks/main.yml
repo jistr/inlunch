@@ -5,3 +5,17 @@
 
 - name: set up instack.answers
   include: instack_answers.yml
+
+- name: fact undercloud_deployed
+  shell: systemctl status openstack-keystone | grep running
+  changed_when: false
+  failed_when: false
+  register: undercloud_deployed
+
+- name: deploy undercloud
+  shell: instack-install-undercloud 2>&1 | tee /tmp/instack-install-undercloud.out
+  args:
+    chdir: "{{ stack_user_home }}"
+  sudo: yes
+  sudo_user: stack
+  when: undercloud_deployed.rc != 0
