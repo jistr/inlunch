@@ -12,7 +12,11 @@
   failed_when: false
   register: undercloud_deployed
 
-- name: deploy undercloud
+- name: stop_before_instack_install_undercloud
+  shell: echo "Stopping on user's request."; false
+  when: stop_before_instack_install_undercloud
+
+- name: install undercloud
   shell: instack-install-undercloud 2>&1 | tee /tmp/instack-install-undercloud.out
   args:
     chdir: "{{ stack_user_home }}"

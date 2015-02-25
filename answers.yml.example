@@ -46,3 +46,10 @@ prebuilt_overcloud_images_dir: ../overcloud-images
 # which means keeping them uppercase is important
 instack_answers:
   DEPLOYMENT_MODE: scale
+
+
+### STOPPING POINTS ###
+
+# valid values are yes or no
+stop_before_instack_virt_setup: no
+stop_before_instack_install_undercloud: no

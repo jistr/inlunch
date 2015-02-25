@@ -34,6 +34,10 @@
   changed_when: false
   register: instack_vm_defined
 
+- name: stop_before_instack_virt_setup
+  shell: echo "Stopping on user's request."; false
+  when: stop_before_instack_virt_setup
+
 - name: run instack-virt-setup
   shell: |
     {{ instack_host_env }}
