@@ -1,0 +1,7 @@
+- name: install instack-undercloud package
+  yum:
+    name: instack-undercloud
+    state: present
+
+- name: set up instack.answers
+  include: instack_answers.yml

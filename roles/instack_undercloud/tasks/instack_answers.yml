@@ -1,0 +1,21 @@
+- name: copy sample answer file
+  shell: cp /usr/share/instack-undercloud/instack.answers.sample {{ stack_user_home }}/instack.answers
+  # This would prevent from overwriting, but since we can set everything
+  # using instack_answers in answers.yml, overwriting should be ok.
+  # args:
+  #   creates: "{{ stack_user_home }}/instack.answers"
+  sudo: yes
+  sudo_user: stack
+
+- name: set images path
+  lineinfile:
+    dest: "{{ stack_user_home }}/instack.answers"
+    regexp: "^IMAGE_PATH="
+    line: "IMAGE_PATH={{ stack_overcloud_images_dir }}"
+
+- name: set custom variable values in instack.answers
+  lineinfile:
+    dest: "{{ stack_user_home }}/instack.answers"
+    regexp: "^{{ item.key }}="
+    line: "{{ item.key }}={{ item.value }}"
+  with_dict: instack_answers

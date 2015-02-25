@@ -38,3 +38,11 @@ instack_host_uc_ssh_port: 2200
 
 # The path is relative to the playbooks directory. Absolute path works too.
 prebuilt_overcloud_images_dir: ../overcloud-images
+
+
+### UNDERCLOUD SETUP ###
+
+# these key names translate directly to variable names in instack.answers,
+# which means keeping them uppercase is important
+instack_answers:
+  DEPLOYMENT_MODE: scale
