@@ -13,5 +13,7 @@
   roles:
     - yum_repos
     - tools
+    - stack_user
+    - instack_prebuilt_overcloud_images
   vars:
     - instack_host_type: uc

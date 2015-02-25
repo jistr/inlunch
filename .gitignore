@@ -1,2 +1,5 @@
 /hosts
 /answers.yml
+
+/overcloud-images/*
+!/overcloud-images/.gitkeep
