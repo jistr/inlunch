@@ -1,0 +1,33 @@
+- name: register instack_vms
+  shell: virsh list --all | grep -E '( instack )|( baremetal_[0-9]+ )' | awk '{ print $2 }'
+  changed_when: false
+  register: instack_vms
+
+- name: print instack_vms variable
+  debug:
+    msg: "{{ instack_vms }}"
+
+- name: destroy instack VMs
+  shell: |
+    virsh destroy {{ item }}
+    virsh undefine --remove-all-storage {{ item }}
+  with_items: instack_vms.stdout_lines
+
+- name: register some_socat_forwarders_running
+  shell: ps aux | grep socat | grep -v grep
+  changed_when: false
+  failed_when: false
+  register: some_socat_forwarders_running
+
+- name: kill socat forwarders
+  shell: pkill socat
+  when: some_socat_forwarders_running.rc == 0
+
+- name: remove instack leftover files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ stack_user_home }}/instack.d"
+    - "{{ stack_user_home }}/instack.qcow2"
+    - "{{ stack_user_home }}/instackenv.json"

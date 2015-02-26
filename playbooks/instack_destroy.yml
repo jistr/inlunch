@@ -1,0 +1,5 @@
+- hosts: instack_host
+  roles:
+    - instack_destroy
+  vars:
+    - instack_host_type: host
