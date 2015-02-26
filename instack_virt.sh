@@ -3,4 +3,4 @@
 ansible-playbook -i hosts \
     --extra-vars '@answers.yml' \
     "$@" \
-    playbooks/instack_undercloud.yml
+    playbooks/instack_virt.yml

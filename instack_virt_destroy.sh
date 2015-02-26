@@ -6,5 +6,5 @@ if [ "$ANSWER" = 'y' ]; then
     ansible-playbook -i hosts \
         --extra-vars '@answers.yml' \
         "$@" \
-        playbooks/instack_destroy.yml
+        playbooks/instack_virt_destroy.yml
 fi
