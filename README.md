@@ -1,4 +1,4 @@
-Inlunch
+inlunch
 =======
 
 Get an Instack environment prepared for you while you head out for
@@ -21,8 +21,15 @@ Start up
   ./download_overcloud_images.sh
   ```
 
-Full instack-virt-setup
------------------------
+instack-virt.sh
+---------------
+
+This is deploying instack-virt-setup on the target host. You'll need a
+reasonably powerful target host, and since instack-virt-setup is doing
+moderately invasive operations on the host, you'll probably not want
+to deploy it on your workstation. (You'll still run
+`./instack-virt.sh` from your workstation, just make sure that the
+`hosts` file points to a different machine.)
 
 * Set up hosts file. You can copy the example one and change the
   machine FQDN there.
