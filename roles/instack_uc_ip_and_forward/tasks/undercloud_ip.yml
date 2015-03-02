@@ -14,5 +14,5 @@
     msg: "{{ undercloud_ip }}"
 
 - name: assert that undercloud_ip is not empty
-  shell: echo "Something went wrong - cannot fetch undercloud VM's IP address. Check /tmp/instack-virt-setup.out."
-  when: undercloud_ip == ""
+  shell: echo "Something went wrong - cannot fetch undercloud VM's IP address. Check /tmp/instack-virt-setup.out."; false
+  when: not undercloud_ip
