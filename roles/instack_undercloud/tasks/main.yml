@@ -2,6 +2,7 @@
   yum:
     name: instack-undercloud
     state: present
+  when: instack_uc_install_instack_undercloud_rpm
 
 - name: set up instack.answers
   include: instack_answers.yml
@@ -17,7 +18,11 @@
   when: stop_before_instack_install_undercloud
 
 - name: install undercloud
-  shell: instack-install-undercloud 2>&1 | tee /tmp/instack-install-undercloud.out
+  shell: |
+    set -exo pipefail
+    {
+      {{ instack_install_undercloud_cmd }}
+    } 2>&1 | tee /tmp/instack-install-undercloud.out
   args:
     chdir: "{{ stack_user_home }}"
   sudo: yes
