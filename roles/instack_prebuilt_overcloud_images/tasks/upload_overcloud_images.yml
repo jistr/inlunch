@@ -3,22 +3,14 @@
     name: rsync
     state: present
 
-- name: overcloud images directory
-  file:
-    path: "{{ stack_overcloud_images_dir }}"
-    state: directory
-    owner: stack
-    group: stack
-    mode: 0755
-
 - name: upload overcloud images
   synchronize:
     src: "{{ prebuilt_overcloud_images_dir }}/"
-    dest: "{{ stack_overcloud_images_dir }}"
+    dest: "{{ stack_user_home }}"
 
-- name: chown overcloud images
+- name: "chown stack user's files (because of overcloud images)"
   file:
-    path: "{{ stack_overcloud_images_dir }}"
+    path: "{{ stack_user_home }}"
     state: directory
     owner: stack
     group: stack

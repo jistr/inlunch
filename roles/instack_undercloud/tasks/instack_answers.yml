@@ -7,12 +7,6 @@
   sudo: yes
   sudo_user: stack
 
-- name: set images path
-  lineinfile:
-    dest: "{{ stack_user_home }}/instack.answers"
-    regexp: "^IMAGE_PATH="
-    line: "IMAGE_PATH={{ stack_overcloud_images_dir }}"
-
 - name: set custom variable values in instack.answers
   lineinfile:
     dest: "{{ stack_user_home }}/instack.answers"
