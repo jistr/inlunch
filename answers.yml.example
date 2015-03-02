@@ -22,19 +22,13 @@ tools_packages:
 instack_host_libvirt_storage_pool: instack
 instack_host_libvirt_storage_path: /home/vms-instack
 
-# these key names translate directly to exported variable names,
-# which means keeping them uppercase is important
-instack_host_env_exports:
-  NODE_DIST: fedora
-  # NODE_DIST: rhel7
-  # RHOS: 1
-  # REG_METHOD: disable
-  # REG_HALT_UNREGISTER: 1
-  # DIB_YUM_REPO_CONF: /etc/yum.repos.d/my-dib-repo.repo
-  # DIB_CLOUD_IMAGES: http://my-base-images
-  # BASE_IMAGE_FILE: my-base-image.x86_64.qcow2
+instack_virt_setup_instack_undercloud_from_rpm: yes
 
-instack_host_env_extra:
+instack_virt_setup_cmd: |
+  export NODE_DIST=fedora
+  source /usr/libexec/openstack-tripleo/devtest_variables.sh
+  tripleo install-dependencies
+  instack-virt-setup
 
 instack_host_uc_http_port: 80
 instack_host_uc_ssh_port: 2200

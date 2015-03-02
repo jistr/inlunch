@@ -1,8 +1,8 @@
 - hosts: instack_host
   roles:
+    - stack_user
     - yum_repos
     - tools
-    - stack_user
     - instack_libvirt_storage
     - instack_virt_setup
     - instack_uc_ip_and_forward
@@ -11,9 +11,9 @@
 
 - hosts: instack_undercloud
   roles:
+    - stack_user
     - yum_repos
     - tools
-    - stack_user
     - instack_prebuilt_overcloud_images
     - instack_undercloud
   vars:
