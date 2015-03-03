@@ -9,3 +9,11 @@
 - name: upload prebuilt overcloud images
   include: build_overcloud_images.yml
   when: overcloud_images_source == 'build'
+
+- name: "chown stack user's files (because of overcloud images)"
+  file:
+    path: "{{ stack_user_home }}"
+    state: directory
+    owner: stack
+    group: stack
+    recurse: yes

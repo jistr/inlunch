@@ -16,5 +16,6 @@
     - tools
     - instack_undercloud
     - instack_overcloud_images
+    - instack_prepare_for_overcloud
   vars:
     - instack_host_type: uc

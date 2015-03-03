@@ -7,11 +7,3 @@
   synchronize:
     src: "{{ prebuilt_overcloud_images_dir }}/"
     dest: "{{ stack_user_home }}"
-
-- name: "chown stack user's files (because of overcloud images)"
-  file:
-    path: "{{ stack_user_home }}"
-    state: directory
-    owner: stack
-    group: stack
-    recurse: yes

@@ -66,6 +66,13 @@ overcloud_images_build_cmd: |
   instack-build-images openstack-full
 
 
+### OVERCLOUD PREPARATION ###
+
+instack_prepare_for_overcloud_cmd: |
+  source ./stackrc
+  instack-undercloud/scripts/instack-prepare-for-overcloud
+
+
 ### STOPPING POINTS ###
 
 # valid values are yes or no
