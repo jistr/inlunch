@@ -1,0 +1,27 @@
+- name: stop_before_instack_prepare_for_overcloud
+  shell: echo "Stopping on user's request."; false
+  when: stop_before_instack_prepare_for_overcloud
+
+- name: register glance_openstack_full_loaded
+  shell: |
+    source ./stackrc
+    glance image-list | grep openstack-full
+  args:
+    chdir: "{{ stack_user_home }}"
+  sudo: yes
+  sudo_user: stack
+  changed_when: false
+  failed_when: false
+  register: glance_openstack_full_loaded
+
+- name: prepare for overcloud
+  shell: |
+    set -exo pipefail
+    {
+      {{ instack_prepare_for_overcloud_cmd }}
+    } 2>&1 | tee /tmp/instack-prepare-for-overcloud.out
+  args:
+    chdir: "{{ stack_user_home }}"
+  sudo: yes
+  sudo_user: stack
+  when: glance_openstack_full_loaded.rc != 0

@@ -1,17 +1,20 @@
-- name: copy sample answer file
-  shell: cp /usr/share/instack-undercloud/instack.answers.sample {{ stack_user_home }}/instack.answers
-  # This would prevent from overwriting, but since we can set everything
-  # using instack_answers in answers.yml, overwriting should be ok.
-  # args:
-  #   creates: "{{ stack_user_home }}/instack.answers"
+- name: set instack_answers_template_path
+  set_fact:
+    actual_instack_answers_template_path: "{{ instack_answers_template_path | default('/usr/share/instack-undercloud/instack.answers.sample', true) }}"
+
+- name: fetch instack answers template
+  shell: curl -o instack.answers {{ actual_instack_answers_template_path }}
+  args:
+    chdir: "{{ stack_user_home }}"
   sudo: yes
   sudo_user: stack
+  when: actual_instack_answers_template_path | match('^http')
 
-- name: set images path
-  lineinfile:
-    dest: "{{ stack_user_home }}/instack.answers"
-    regexp: "^IMAGE_PATH="
-    line: "IMAGE_PATH={{ stack_overcloud_images_dir }}"
+- name: copy template answer file
+  shell: cp {{ actual_instack_answers_template_path }} {{ stack_user_home }}/instack.answers
+  sudo: yes
+  sudo_user: stack
+  when: not actual_instack_answers_template_path | match('^http')
 
 - name: set custom variable values in instack.answers
   lineinfile:

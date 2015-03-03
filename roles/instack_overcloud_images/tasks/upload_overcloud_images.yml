@@ -1,0 +1,9 @@
+- name: make sure rsync is installed
+  yum:
+    name: rsync
+    state: present
+
+- name: upload overcloud images
+  synchronize:
+    src: "{{ prebuilt_overcloud_images_dir }}/"
+    dest: "{{ stack_user_home }}"

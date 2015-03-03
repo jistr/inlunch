@@ -2,29 +2,7 @@
   yum:
     name: instack-undercloud
     state: installed
-
-- name: set instack_host_env
-  set_fact:
-    instack_host_env: |
-      export LIBVIRT_VOL_POOL={{ instack_host_libvirt_storage_pool }}
-      {% for var_name in instack_host_env_exports %}
-        export {{ var_name }}="{{ instack_host_env_exports[var_name] }}"
-      {% endfor %}
-      source /usr/libexec/openstack-tripleo/devtest_variables.sh
-      {{ instack_host_env_extra if instack_host_env_extra is defined }}
-
-- name: print instack host environment
-  debug:
-    msg: "{{ instack_host_env }}"
-
-- name: install instack dependencies
-  shell: |
-    {{ instack_host_env }}
-    tripleo install-dependencies
-  args:
-    chdir: "{{ stack_user_home }}"
-  sudo: yes
-  sudo_user: stack
+  when: instack_host_install_instack_undercloud_rpm
 
 - name: fact instack_vm_defined
   shell: virsh list --all | grep instack
@@ -38,8 +16,11 @@
 
 - name: run instack-virt-setup
   shell: |
-    {{ instack_host_env }}
-    instack-virt-setup 2>&1 | tee /tmp/instack-virt-setup.out
+    set -exo pipefail
+    {
+      export LIBVIRT_VOL_POOL={{ instack_host_libvirt_storage_pool }}
+      {{ instack_virt_setup_cmd }}
+    } 2>&1 | tee /tmp/instack-virt-setup.out
   args:
     chdir: "{{ stack_user_home }}"
   sudo: yes

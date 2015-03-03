@@ -22,36 +22,55 @@ tools_packages:
 instack_host_libvirt_storage_pool: instack
 instack_host_libvirt_storage_path: /home/vms-instack
 
-# these key names translate directly to exported variable names,
-# which means keeping them uppercase is important
-instack_host_env_exports:
-  NODE_DIST: fedora
-  # NODE_DIST: rhel7
-  # RHOS: 1
-  # REG_METHOD: disable
-  # REG_HALT_UNREGISTER: 1
-  # DIB_YUM_REPO_CONF: /etc/yum.repos.d/my-dib-repo.repo
-  # DIB_CLOUD_IMAGES: http://my-base-images
-  # BASE_IMAGE_FILE: my-base-image.x86_64.qcow2
+instack_host_install_instack_undercloud_rpm: yes
 
-instack_host_env_extra:
+instack_virt_setup_cmd: |
+  export NODE_DIST=fedora
+  source /usr/libexec/openstack-tripleo/devtest_variables.sh
+  tripleo install-dependencies
+  instack-virt-setup
 
 instack_host_uc_http_port: 80
 instack_host_uc_ssh_port: 2200
 
 
-### IMAGES SETUP ###
-
-# The path is relative to the playbooks directory. Absolute path works too.
-prebuilt_overcloud_images_dir: ../overcloud-images
-
-
 ### UNDERCLOUD SETUP ###
+
+instack_uc_install_instack_undercloud_rpm: yes
+
+# can be a URL or a local path on the undercloud VM
+# (when unset, default's to RPM's instack.answers.sample)
+instack_answers_template_path: https://raw.githubusercontent.com/rdo-management/instack-undercloud/master/instack.answers.sample
 
 # these key names translate directly to variable names in instack.answers,
 # which means keeping them uppercase is important
 instack_answers:
   DEPLOYMENT_MODE: scale
+
+instack_install_undercloud_cmd: |
+  instack-install-undercloud
+
+
+### IMAGES SETUP ###
+
+# Valid values are 'prebuilt' and 'build'
+overcloud_images_source: prebuilt
+
+# The path is relative to the playbooks directory. Absolute path works too.
+prebuilt_overcloud_images_dir: ../overcloud-images
+
+overcloud_images_build_cmd: |
+  export NODE_DIST=fedora
+  instack-build-images deploy-ramdisk
+  instack-build-images discovery-ramdisk
+  instack-build-images openstack-full
+
+
+### OVERCLOUD PREPARATION ###
+
+instack_prepare_for_overcloud_cmd: |
+  source ./stackrc
+  instack-prepare-for-overcloud
 
 
 ### STOPPING POINTS ###
@@ -59,3 +78,5 @@ instack_answers:
 # valid values are yes or no
 stop_before_instack_virt_setup: no
 stop_before_instack_install_undercloud: no
+stop_before_instack_build_images: no
+stop_before_instack_prepare_for_overcloud: no
