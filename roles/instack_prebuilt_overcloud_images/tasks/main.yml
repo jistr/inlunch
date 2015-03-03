@@ -1,3 +1,0 @@
-- name: upload prebuilt overcloud images
-  include: upload_overcloud_images.yml
-  # TODO: only execute when using prebuilt images

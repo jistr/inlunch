@@ -1,0 +1,12 @@
+- name: build overcloud images
+  shell: |
+    set -exo pipefail
+    {
+      {{ overcloud_images_build_cmd }}
+    } 2>&1 | tee /tmp/instack-build-images.out
+  args:
+    chdir: "{{ stack_user_home }}"
+    # don't rebuild if openstack-full exists
+    creates: "{{ stack_user_home }}/openstack-full.qcow2"
+  sudo: yes
+  sudo_user: stack

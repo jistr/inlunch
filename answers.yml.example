@@ -34,12 +34,6 @@ instack_host_uc_http_port: 80
 instack_host_uc_ssh_port: 2200
 
 
-### IMAGES SETUP ###
-
-# The path is relative to the playbooks directory. Absolute path works too.
-prebuilt_overcloud_images_dir: ../overcloud-images
-
-
 ### UNDERCLOUD SETUP ###
 
 instack_uc_install_instack_undercloud_rpm: yes
@@ -55,6 +49,21 @@ instack_answers:
 
 instack_install_undercloud_cmd: |
   instack-install-undercloud
+
+
+### IMAGES SETUP ###
+
+# Valid values are 'prebuilt' and 'build'
+overcloud_images_source: prebuilt
+
+# The path is relative to the playbooks directory. Absolute path works too.
+prebuilt_overcloud_images_dir: ../overcloud-images
+
+overcloud_images_build_cmd: |
+  export NODE_DIST=fedora
+  instack-build-images deploy-ramdisk
+  instack-build-images discovery-ramdisk
+  instack-build-images openstack-full
 
 
 ### STOPPING POINTS ###
