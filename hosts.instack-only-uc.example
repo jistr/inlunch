@@ -1,0 +1,2 @@
+[instack_only_uc]
+my-instack-vm.example.org  ansible_ssh_user=root
