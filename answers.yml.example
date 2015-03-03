@@ -38,7 +38,7 @@ instack_host_uc_ssh_port: 2200
 
 instack_uc_install_instack_undercloud_rpm: yes
 
-# can be a URL or a local path
+# can be a URL or a local path on the undercloud VM
 # (when unset, default's to RPM's instack.answers.sample)
 instack_answers_template_path: https://raw.githubusercontent.com/rdo-management/instack-undercloud/master/instack.answers.sample
 

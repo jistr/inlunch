@@ -3,8 +3,8 @@
     - yum_repos
     - tools
     - stack_user
-    - instack_overcloud_images
     - instack_undercloud
+    - instack_overcloud_images
     - instack_prepare_for_overcloud
   vars:
     - instack_host_type: uc
