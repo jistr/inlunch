@@ -70,7 +70,7 @@ overcloud_images_build_cmd: |
 
 instack_prepare_for_overcloud_cmd: |
   source ./stackrc
-  instack-undercloud/scripts/instack-prepare-for-overcloud
+  instack-prepare-for-overcloud
 
 
 ### STOPPING POINTS ###
@@ -78,3 +78,5 @@ instack_prepare_for_overcloud_cmd: |
 # valid values are yes or no
 stop_before_instack_virt_setup: no
 stop_before_instack_install_undercloud: no
+stop_before_instack_build_images: no
+stop_before_instack_prepare_for_overcloud: no
