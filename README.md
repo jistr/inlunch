@@ -18,7 +18,7 @@ Start up
 * If you'll want to use pre-built overcloud images, download them.
 
   ```bash
-  ./download_overcloud_images.sh
+  ./download-overcloud-images.sh
   ```
 
 instack-virt.sh
@@ -50,13 +50,13 @@ to deploy it on your workstation. (You'll still run
 * Deploy!
 
   ```bash
-  ./instack_virt.sh
+  ./instack-virt.sh
   ```
 
 * Later, you can clean up your environment before re-deploying.
 
   ```bash
-  ./instack_virt_destroy.sh
+  ./instack-virt-destroy.sh
   ```
 
 instack-only-uc.sh
