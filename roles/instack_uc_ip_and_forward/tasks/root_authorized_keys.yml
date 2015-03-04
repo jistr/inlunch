@@ -1,5 +1,7 @@
 - name: make root user authorized keys accessible to stack
-  shell: cp /root/.ssh/authorized_keys {{ stack_user_home }}/root_authorized_keys
+  shell: |
+    cp /root/.ssh/authorized_keys {{ stack_user_home }}/root_authorized_keys
+    chown stack:stack {{ stack_user_home }}/root_authorized_keys
 
 - name: copy host authorized keys for matching in undercloud
   shell: scp -o 'StrictHostKeyChecking=no' root_authorized_keys root@{{ undercloud_ip }}:/root/host_root_authorized_keys
