@@ -6,7 +6,7 @@
     } 2>&1 | tee /tmp/instack-build-images.out
   args:
     chdir: "{{ stack_user_home }}"
-    # don't rebuild if openstack-full exists
-    creates: "{{ stack_user_home }}/openstack-full.qcow2"
+    # don't rebuild
+    creates: "{{ stack_user_home }}/discovery-ramdisk.initramfs"
   sudo: yes
   sudo_user: stack
