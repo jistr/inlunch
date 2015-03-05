@@ -7,7 +7,7 @@ lunch.
 Start up
 --------
 
-* Clone this repo *to your workstation*. Inlunch talk to hosts
+* Clone this repo *to your workstation*. Inlunch talks to hosts
   remotely using ssh.
 
   ```bash
