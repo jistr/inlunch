@@ -57,7 +57,7 @@ instack_install_undercloud_cmd: |
 overcloud_images_source: prebuilt
 
 # The path is relative to the playbooks directory. Absolute path works too.
-prebuilt_overcloud_images_dir: ../overcloud-images
+overcloud_images_prebuilt_dir: ../overcloud-images
 
 overcloud_images_build_cmd: |
   export NODE_DIST=fedora
