@@ -10,4 +10,4 @@ pushd "$OVERCLOUD_IMAGES_DIR"
 
 wget -r --no-parent --no-host-directories --cut-dirs=100 --reject 'index.html*' "$OVERCLOUD_IMAGES_BASE_URL"
 
-popd "$OVERCLOUD_IMAGES_DIR"
+popd
