@@ -11,8 +11,8 @@ Start up
   remotely using ssh.
 
   ```bash
-  sudo yum -y install ansible
-  git clone https://github.com/jistr/inlunch
+  sudo yum -y install git ansible
+  git clone https://github.com/rdo-management/inlunch
   cd inlunch
   ```
 
