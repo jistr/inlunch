@@ -22,3 +22,7 @@
     ansible_ssh_host: "{{ inventory_hostname }}"
     ansible_ssh_port: "{{ instack_host_uc_ssh_port }}"
     ansible_ssh_user: root
+
+- name: stop_after_undercloud_forwarding
+  shell: echo "Stopping on user's request."; false
+  when: stop_after_undercloud_forwarding

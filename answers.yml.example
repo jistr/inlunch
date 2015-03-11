@@ -77,6 +77,8 @@ instack_prepare_for_overcloud_cmd: |
 
 # valid values are yes or no
 stop_before_instack_virt_setup: no
+stop_after_instack_virt_setup: no
+stop_after_undercloud_forwarding: no
 stop_before_instack_install_undercloud: no
 stop_before_instack_build_images: no
 stop_before_instack_prepare_for_overcloud: no

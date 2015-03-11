@@ -26,3 +26,7 @@
   sudo: yes
   sudo_user: stack
   when: instack_vm_defined.rc != 0
+
+- name: stop_after_instack_virt_setup
+  shell: echo "Stopping on user's request."; false
+  when: stop_after_instack_virt_setup
