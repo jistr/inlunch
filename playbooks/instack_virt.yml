@@ -1,5 +1,6 @@
 - hosts: instack_host
   roles:
+    - stopping_point_validation
     - stack_user
     - yum_repos
     - tools

@@ -1,6 +1,6 @@
-- name: stop_before_instack_build_images
+- name: stopping point before_instack_build_images
   shell: echo "Stopping on user's request."; false
-  when: stop_before_instack_build_images
+  when: stopping_point == 'before_instack_build_images'
 
 - name: assert overcloud_images_source has a valid value
   shell: echo "Unknown overcloud_images_source value '{{ overcloud_images_source }}'"; false

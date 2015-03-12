@@ -1,6 +1,6 @@
-- name: stop_before_instack_prepare_for_overcloud
+- name: stopping point before_instack_prepare_for_overcloud
   shell: echo "Stopping on user's request."; false
-  when: stop_before_instack_prepare_for_overcloud
+  when: stopping_point == 'before_instack_prepare_for_overcloud'
 
 - name: register glance_openstack_full_loaded
   shell: |

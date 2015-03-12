@@ -13,9 +13,9 @@
   failed_when: false
   register: undercloud_deployed
 
-- name: stop_before_instack_install_undercloud
+- name: stopping point before_instack_install_undercloud
   shell: echo "Stopping on user's request."; false
-  when: stop_before_instack_install_undercloud
+  when: stopping_point == 'before_instack_install_undercloud'
 
 - name: install undercloud
   shell: |

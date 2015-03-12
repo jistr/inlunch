@@ -10,9 +10,9 @@
   changed_when: false
   register: instack_vm_defined
 
-- name: stop_before_instack_virt_setup
+- name: stopping point before_instack_virt_setup
   shell: echo "Stopping on user's request."; false
-  when: stop_before_instack_virt_setup
+  when: stopping_point == 'before_instack_virt_setup
 
 - name: run instack-virt-setup
   shell: |
@@ -27,6 +27,6 @@
   sudo_user: stack
   when: instack_vm_defined.rc != 0
 
-- name: stop_after_instack_virt_setup
+- name: stopping point after_instack_virt_setup
   shell: echo "Stopping on user's request."; false
-  when: stop_after_instack_virt_setup
+  when: stopping_point == 'after_instack_virt_setup'

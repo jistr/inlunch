@@ -1,0 +1,3 @@
+- name: validate the stopping point
+  shell: echo "STOPPING POINT NOT VALID. Please use one of: {{ valid_stopping_points | join(', ') }}"; false
+  when: stopping_point and (stopping_point not in valid_stopping_points)

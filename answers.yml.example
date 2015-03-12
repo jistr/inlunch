@@ -75,10 +75,12 @@ instack_prepare_for_overcloud_cmd: |
 
 ### STOPPING POINTS ###
 
-# valid values are yes or no
-stop_before_instack_virt_setup: no
-stop_after_instack_virt_setup: no
-stop_after_undercloud_forwarding: no
-stop_before_instack_install_undercloud: no
-stop_before_instack_build_images: no
-stop_before_instack_prepare_for_overcloud: no
+# if you want to terminate the run early at a specified point, set the
+# stopping_point to one of these values:
+#   before_instack_virt_setup
+#   after_instack_virt_setup
+#   after_undercloud_forwarding
+#   before_instack_install_undercloud
+#   before_instack_build_images
+#   before_instack_prepare_for_overcloud
+stopping_point:
