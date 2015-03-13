@@ -4,6 +4,14 @@
     state: installed
   when: instack_host_install_instack_undercloud_rpm
 
+- name: undercloud-ip.sh helper
+  template:
+    src: undercloud-ip.sh.j2
+    dest: "{{ stack_user_home }}/undercloud-ip.sh"
+    owner: stack
+    group: stack
+    mode: 0755
+
 - name: fact instack_vm_defined
   shell: virsh list --all | grep instack
   failed_when: false

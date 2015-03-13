@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cat /var/lib/libvirt/dnsmasq/default.leases | grep $(tripleo get-vm-mac instack) | awk '{print $3;}'
