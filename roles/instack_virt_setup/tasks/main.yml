@@ -12,7 +12,7 @@
 
 - name: stopping point before_instack_virt_setup
   shell: echo "Stopping on user's request."; false
-  when: stopping_point == 'before_instack_virt_setup
+  when: stopping_point == 'before_instack_virt_setup'
 
 - name: run instack-virt-setup
   shell: |
