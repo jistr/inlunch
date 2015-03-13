@@ -73,7 +73,12 @@ to deploy it on your workstation. (You'll still run
 * The script listens to `INLUNCH_ANSWERS` and `INLUNCH_HOSTS`
   environment variables, allowing you to customize answer/hosts file
   location. If you provide `INLUNCH_FQDN` variable, the scripts will
-  use that host and you don't need to create a hosts file manually.
+  use that host and you don't need to create a hosts file
+  manually. E.g.:
+
+  ```bash
+  INLUNCH_ANSWERS=my_answers.yml INLUNCH_FQDN=my_machine.example.org ./instack-virt.sh
+  ```
 
 instack-only-uc.sh
 ------------------
