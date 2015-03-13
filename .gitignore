@@ -6,3 +6,4 @@
 
 /overcloud-images/*
 !/overcloud-images/.gitkeep
+/tmp

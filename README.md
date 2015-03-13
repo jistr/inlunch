@@ -60,6 +60,21 @@ to deploy it on your workstation. (You'll still run
   ./instack-virt-destroy.sh
   ```
 
+### Tricks for instack-virt.sh
+
+* After running `instack-virt.sh`, you can ssh to your target machine
+  on port 2200 (e.g. `ssh -p 2200 root@my_instack_host`) to reach the
+  undercloud machine directly.
+
+* HTTP is forwarded from undercloud similarly as ssh. Pointing your
+  browser to your instack host will let you access undercloud
+  dashboard transparently.
+
+* The script listens to `INLUNCH_ANSWERS` and `INLUNCH_HOSTS`
+  environment variables, allowing you to customize answer/hosts file
+  location. If you provide `INLUNCH_FQDN` variable, the scripts will
+  use that host and you don't need to create a hosts file manually.
+
 instack-only-uc.sh
 ------------------
 
