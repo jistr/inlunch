@@ -2,8 +2,8 @@
   include: current_vars.yml
 
 - name: do a repo setup using a program
-  include: repos_program.yml
-  when: instack_current_repos_program_rpm and instack_current_repos_program_cmd
+  include: repos_cmd.yml
+  when: instack_current_repos_cmd
 
 - name: clean yum cache
   shell: yum clean all

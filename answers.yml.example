@@ -1,10 +1,8 @@
 ### REPO SETUP ###
 
-instack_host_repos_program_rpm:
-instack_host_repos_program_cmd:
+instack_host_repos_cmd:
 
-instack_uc_repos_program_rpm:
-instack_uc_repos_program_cmd:
+instack_uc_repos_rpm:
 
 
 ### TOOLS SETUP ###
