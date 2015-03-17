@@ -1,9 +1,11 @@
 - name: set current repo vars for host
   set_fact:
+    instack_current_repos_baseurls: "{{ instack_host_repos_baseurls }}"
     instack_current_repos_cmd: "{{ instack_host_repos_cmd }}"
   when: instack_host_type == 'host'
 
 - name: set current repo vars for undercloud
   set_fact:
+    instack_current_repos_baseurls: "{{ instack_uc_repos_baseurls }}"
     instack_current_repos_cmd: "{{ instack_uc_repos_cmd }}"
   when: instack_host_type == 'uc'

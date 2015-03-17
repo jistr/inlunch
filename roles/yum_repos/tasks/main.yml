@@ -1,9 +1,13 @@
 - name: set current repo vars for host type
   include: current_vars.yml
 
+- name: enable specified repo baseurls
+  include: repos_baseurls.yml
+  when: instack_current_repos_baseurls is defined and instack_current_repos_baseurls
+
 - name: do a repo setup using a program
   include: repos_cmd.yml
-  when: instack_current_repos_cmd
+  when: instack_current_repos_cmd is defined and instack_current_repos_cmd
 
 - name: clean yum cache
   shell: yum clean all
