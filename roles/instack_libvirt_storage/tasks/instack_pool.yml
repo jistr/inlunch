@@ -5,19 +5,19 @@
   changed_when: false
   failed_when: false
 
-- name: Create storage pool path
+- name: create storage pool path
   file:
     path: "{{ instack_host_libvirt_storage_path }}"
     state: directory
 
-- name: Create instack pool
+- name: create instack pool
   shell: virsh pool-define-as {{ instack_host_libvirt_storage_pool }} dir --target {{ instack_host_libvirt_storage_path }}
   when: instack_storage_pool_exists.rc != 0
 
-- name: Start instack pool
+- name: start instack pool
   shell: virsh pool-start instack
   when: instack_storage_pool_exists.rc != 0
 
-- name: Set instack pool to autostart
+- name: set instack pool to autostart
   shell: virsh pool-autostart instack
   when: instack_storage_pool_exists.rc != 0
