@@ -16,3 +16,10 @@
   service:
     name: libvirtd
     state: running
+
+- name: ensure correct permissions on /dev/kvm
+  file:
+    path: /dev/kvm
+    owner: root
+    group: kvm
+    mode: 0660
