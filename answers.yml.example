@@ -83,6 +83,7 @@ instack_prepare_for_overcloud_cmd: |
 
 # if you want to terminate the run early at a specified point, set the
 # stopping_point to one of these values:
+#   after_instack_libvirt_storage
 #   before_instack_virt_setup
 #   after_instack_virt_setup
 #   after_undercloud_forwarding

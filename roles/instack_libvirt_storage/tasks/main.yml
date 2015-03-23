@@ -2,3 +2,7 @@
 - name: create instack storage pool
   include: instack_pool.yml
   when: instack_host_libvirt_storage_path is defined and instack_host_libvirt_storage_path
+
+- name: stopping point after_instack_libvirt_storage
+  shell: echo "Stopping on user's request."; false
+  when: stopping_point == 'after_instack_libvirt_storage'
