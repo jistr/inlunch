@@ -3,4 +3,4 @@
     src: repo.j2
     dest: /etc/yum.repos.d/{{ item.key }}.repo
     mode: 0644
-  with_dict: instack_current_repos_baseurls
+  with_dict: instack_current_repos_baseurls if instack_current_repos_baseurls else {}
