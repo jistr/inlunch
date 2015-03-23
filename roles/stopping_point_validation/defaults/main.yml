@@ -1,4 +1,5 @@
 valid_stopping_points:
+  - after_instack_libvirt_storage
   - before_instack_virt_setup
   - after_instack_virt_setup
   - after_undercloud_forwarding
