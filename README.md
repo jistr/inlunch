@@ -95,6 +95,7 @@ them to see what they do to your workstation before using them.
   it manually.
 
   ```bash
+  sudo yum -y install libguestfs-tools
   INSTACK_DIST=fedora20 ./instack-only-uc-vm-create.sh
   ```
 
