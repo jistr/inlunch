@@ -4,9 +4,6 @@
     state: present
   when: instack_uc_install_instack_undercloud_rpm
 
-- name: set up instack.answers
-  include: instack_answers.yml
-
 - name: fact undercloud_deployed
   shell: systemctl status openstack-keystone | grep running
   changed_when: false
