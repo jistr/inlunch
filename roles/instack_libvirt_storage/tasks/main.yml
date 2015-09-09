@@ -1,7 +1,20 @@
 ---
-- name: create instack storage pool
-  include: instack_pool.yml
-  when: instack_host_libvirt_storage_path is defined and instack_host_libvirt_storage_path
+- name: remove libvirt image storage directory if it is a directory
+  shell: /usr/bin/rmdir /var/lib/libvirt/images || true
+
+- name: create a directory for libvirt image storage in home partition
+  file:
+    path: /home/libvirt-images
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: link libvirt image storage to home partition
+  file:
+    path: /var/lib/libvirt/images
+    src: /home/libvirt-images
+    state: link
 
 - name: stopping point after_instack_libvirt_storage
   shell: echo "Stopping on user's request."; false

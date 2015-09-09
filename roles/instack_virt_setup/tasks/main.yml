@@ -26,7 +26,6 @@
   shell: |
     set -exo pipefail
     {
-      export LIBVIRT_VOL_POOL={{ instack_host_libvirt_storage_pool }}
       {{ instack_virt_setup_cmd }}
     } 2>&1 | tee /tmp/instack-virt-setup.out
   args:
