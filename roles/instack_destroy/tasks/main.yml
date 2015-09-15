@@ -28,6 +28,8 @@
     path: "{{ item }}"
     state: absent
   with_items:
+    - "{{ stack_user_home }}/.cache/image-create"
+    - "{{ stack_user_home }}/.cache/tripleo"
     - "{{ stack_user_home }}/instack.d"
     - "{{ stack_user_home }}/instack.qcow2"
     - "{{ stack_user_home }}/instackenv.json"
