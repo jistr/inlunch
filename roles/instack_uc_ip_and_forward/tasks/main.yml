@@ -1,9 +1,6 @@
 - name: fetch undercloud VM IP address
   include: undercloud_ip.yml
 
-- name: authorize keys in undercloud for ansible connection
-  include: root_authorized_keys.yml
-
 - name: ensure socat is installed
   yum:
     name: socat
@@ -14,6 +11,16 @@
 
 - name: undercloud http forwarding
   include: http_forward.yml
+
+- name: wait for undercloud ssh to become available
+  wait_for:
+    host: localhost
+    port: "{{ instack_host_uc_ssh_port }}"
+    search_regex: OpenSSH
+    timeout: 300
+
+- name: authorize keys in undercloud for ansible connection
+  include: root_authorized_keys.yml
 
 - name: add undercloud to ansible host inventory
   add_host:
