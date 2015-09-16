@@ -7,8 +7,18 @@ instack_host_repos_baseurls:
 instack_host_repos_cmd: |
   yum install -y http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
   yum install -y https://rdoproject.org/repos/openstack-kilo/rdo-release-kilo.rpm
-  curl -o /etc/yum.repos.d/rdo-management-trunk.repo http://trunk-mgt.rdoproject.org/centos-kilo/current-passed-ci/delorean-rdo-management.repo
-  # curl -o /etc/yum.repos.d/rdo-management-trunk.repo http://trunk-mgt.rdoproject.org/centos-kilo/current/delorean-rdo-management.repo
+  curl http://trunk.rdoproject.org/centos7/delorean-deps.repo -o /etc/yum.repos.d/delorean-deps.repo
+  curl http://trunk.rdoproject.org/centos7/df/03/df0377d64e1ef0b53c4e78a8ff6a50159de5131a_733f1417/delorean.repo -o /etc/yum.repos.d/delorean.repo
+
+  curl -o /etc/yum.repos.d/delorean-current.repo http://trunk.rdoproject.org/centos7/current/delorean.repo
+  sed -i 's/\[delorean\]/\[delorean-current\]/' /etc/yum.repos.d/delorean-current.repo
+  /bin/bash -c 'cat <<EOF>>/etc/yum.repos.d/delorean-current.repo
+
+  includepkgs=diskimage-builder,openstack-heat,instack,instack-undercloud,openstack-ironic,openstack-ironic-discoverd,os-cloud-config,python-ironic-inspector-client,python-tripleoclient,tripleo-common,openstack-tripleo-heat-templates,openstack-tripleo-image-elements,openstack-tuskar-ui-extras,openstack-puppet-modules
+  EOF'
+
+  yum -y install yum-plugin-priorities
+  yum -y update
 
 # dictionary (keys are repo names, values are base URLs)
 instack_uc_repos_baseurls:
@@ -17,8 +27,18 @@ instack_uc_repos_baseurls:
 instack_uc_repos_cmd: |
   yum install -y http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
   yum install -y https://rdoproject.org/repos/openstack-kilo/rdo-release-kilo.rpm
-  curl -o /etc/yum.repos.d/rdo-management-trunk.repo http://trunk-mgt.rdoproject.org/centos-kilo/current-passed-ci/delorean-rdo-management.repo
-  # curl -o /etc/yum.repos.d/rdo-management-trunk.repo http://trunk-mgt.rdoproject.org/centos-kilo/current/delorean-rdo-management.repo
+  curl http://trunk.rdoproject.org/centos7/delorean-deps.repo -o /etc/yum.repos.d/delorean-deps.repo
+  curl http://trunk.rdoproject.org/centos7/df/03/df0377d64e1ef0b53c4e78a8ff6a50159de5131a_733f1417/delorean.repo -o /etc/yum.repos.d/delorean.repo
+
+  curl -o /etc/yum.repos.d/delorean-current.repo http://trunk.rdoproject.org/centos7/current/delorean.repo
+  sed -i 's/\[delorean\]/\[delorean-current\]/' /etc/yum.repos.d/delorean-current.repo
+  /bin/bash -c 'cat <<EOF>>/etc/yum.repos.d/delorean-current.repo
+
+  includepkgs=diskimage-builder,openstack-heat,instack,instack-undercloud,openstack-ironic,openstack-ironic-discoverd,os-cloud-config,python-ironic-inspector-client,python-tripleoclient,tripleo-common,openstack-tripleo-heat-templates,openstack-tripleo-image-elements,openstack-tuskar-ui-extras,openstack-puppet-modules
+  EOF'
+
+  yum -y install yum-plugin-priorities
+  yum -y update
 
 
 ### TOOLS SETUP ###
@@ -40,7 +60,18 @@ instack_host_install_instack_undercloud_rpm: yes
 
 instack_virt_setup_cmd: |
   export NODE_DIST=centos7
-  export NODE_COUNT=5
+
+  export NODE_CPU=2
+  export UNDERCLOUD_NODE_MEM=6000
+  export NODE_MEM=4400
+
+  export NODE_COUNT=6
+
+  # workaround
+  mkdir -p ~/.cache/tripleo/tripleo-incubator/scripts
+
+  # workaround
+  sudo sed -ie 's|rpm -i /|rpm -i --replacepkgs /|' /usr/share/diskimage-builder/elements/redhat-common/pre-install.d/15-remove-grub
 
   instack-virt-setup
 
@@ -55,10 +86,18 @@ instack_uc_install_instack_undercloud_rpm: yes
 instack_install_undercloud_cmd: |
   sudo yum install -y python-rdomanager-oscplugin
   export FACTER_fqdn=$(hostname -f)
-  cp /usr/share/instack-undercloud/undercloud.conf.sample ~/undercloud.conf
+  export LC_TIME=en_US.UTF-8
+  cp /usr/share/instack-undercloud/undercloud.conf.sample ~/undercloud.conf || true
+
+  export DIB_INSTALLTYPE_puppet_modules=source
+  export DIB_REPOREF_puppetlabs_concat=15ecb98dc3a551024b0b92c6aafdefe960a4596f
+  export DIB_REPOREF_puppet_cinder=0d1b1fa222338390ebd5a46e8ad7687d5dc300a3
 
   openstack undercloud install
 
+  # workaround
+  sudo openstack-config --set /etc/ironic/ironic.conf inspector enabled false
+  sudo systemctl restart openstack-ironic-conductor
 
 ### IMAGES SETUP ###
 
@@ -70,8 +109,16 @@ overcloud_images_prebuilt_dir: ../overcloud-images
 
 overcloud_images_build_cmd: |
   export NODE_DIST=centos7
+  export DIB_NO_TMPFS=1
 
-  instack-build-images
+  export DIB_INSTALLTYPE_puppet_modules=source
+  export DIB_REPOREF_puppetlabs_concat=15ecb98dc3a551024b0b92c6aafdefe960a4596f
+  export DIB_REPOREF_puppet_cinder=0d1b1fa222338390ebd5a46e8ad7687d5dc300a3
+
+  # workaround
+  sudo sed -ie 's|rpm -i /|rpm -i --replacepkgs /|' /usr/share/diskimage-builder/elements/redhat-common/pre-install.d/15-remove-grub
+
+  openstack overcloud image build --all
 
 
 ### OVERCLOUD PREPARATION ###
@@ -79,7 +126,16 @@ overcloud_images_build_cmd: |
 instack_prepare_for_overcloud_cmd: |
   source ./stackrc
 
-  instack-prepare-for-overcloud
+  openstack overcloud image upload
+  openstack baremetal import --json instackenv.json
+  openstack baremetal configure boot
+  openstack baremetal introspection bulk start
+  openstack flavor create --id auto --ram 4096 --disk 40 --vcpus 1 baremetal
+  openstack flavor set --property "cpu_arch"="x86_64" --property "capabilities:boot_option"="local" baremetal
+
+  OVERCLOUD_DNS_SERVER=$(cat /etc/resolv.conf | grep nameserver | head -n1 | awk '{ print $2 }')
+  CTLPLANE_SUBNET_ID=$(neutron subnet-list | grep '192.0.2.0/24' | awk '{ print $2 }')
+  neutron subnet-update "$CTLPLANE_SUBNET_ID" --dns-nameserver "$OVERCLOUD_DNS_SERVER"
 
 
 ### STOPPING POINTS ###
