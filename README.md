@@ -16,12 +16,6 @@ Start up
   cd inlunch
   ```
 
-* If you'll want to use pre-built overcloud images, download them.
-
-  ```bash
-  ./download-overcloud-images.sh
-  ```
-
 instack-virt.sh
 ---------------
 
@@ -31,14 +25,6 @@ moderately invasive operations on the host, you'll probably not want
 to deploy it on your workstation. (You'll still run
 `./instack-virt.sh` from your workstation, just make sure that the
 `hosts` file points to a different machine.)
-
-* Set up hosts file. You can copy the example one and change the
-  machine FQDN there.
-
-  ```bash
-  cp hosts.instack-virt.example hosts.instack-virt
-  # edit it manually
-  ```
 
 * Create an answer file to suit your needs, either by copying and
   amending the example one, or getting a ready one from a friend.
@@ -51,13 +37,13 @@ to deploy it on your workstation. (You'll still run
 * Deploy!
 
   ```bash
-  ./instack-virt.sh
+  INLUNCH_FQDN=my-lab-machine.example.org ./instack-virt.sh
   ```
 
 * Later, you can clean up your environment before re-deploying.
 
   ```bash
-  ./instack-virt-destroy.sh
+  INLUNCH_FQDN=my-lab-machine.example.org ./instack-virt-destroy.sh
   ```
 
 ### Tricks for instack-virt.sh
