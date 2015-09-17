@@ -26,3 +26,6 @@
     mode: 0644
     owner: stack
     group: stack
+
+- name: copy authorized_keys from root user
+  include: copy_authorized_keys.yml

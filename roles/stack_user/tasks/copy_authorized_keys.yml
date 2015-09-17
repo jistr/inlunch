@@ -1,0 +1,33 @@
+- name: stack user ssh directory
+  file:
+    path: "{{ stack_user_home }}/.ssh"
+    state: directory
+    owner: stack
+    group: stack
+    mode: 0700
+
+- name: stack user ssh directory
+  file:
+    path: "{{ stack_user_home }}/.ssh"
+    state: directory
+    owner: stack
+    group: stack
+    mode: 0700
+
+- name: fact stack_keys_in_sync
+  shell: diff /root/.ssh/authorized_keys {{ stack_user_home }}/.ssh/authorized_keys
+  register: stack_keys_in_sync
+  failed_when: false
+  changed_when: false
+
+- name: copy root authorized keys
+  shell: cp /root/.ssh/authorized_keys {{ stack_user_home }}/.ssh/authorized_keys
+  when: stack_keys_in_sync.rc != 0
+
+- name: stack user authorized keys permissions
+  file:
+    path: "{{ stack_user_home }}/.ssh/authorized_keys"
+    state: file
+    owner: stack
+    group: stack
+    mode: 0600
