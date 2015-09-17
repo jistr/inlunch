@@ -5,7 +5,7 @@
 - name: register glance_openstack_full_loaded
   shell: |
     source ./stackrc
-    glance image-list | grep openstack-full
+    glance image-list | grep overcloud-full
   args:
     chdir: "{{ stack_user_home }}"
   sudo: yes
