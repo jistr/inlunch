@@ -5,5 +5,5 @@
 
 - name: upload overcloud images
   synchronize:
-    src: "{{ prebuilt_overcloud_images_dir }}/"
+    src: "{{ overcloud_images_prebuilt_dir }}/"
     dest: "{{ stack_user_home }}"
