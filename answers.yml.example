@@ -8,7 +8,7 @@ instack_host_repos_cmd: |
   yum install -y http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
   yum install -y https://rdoproject.org/repos/openstack-kilo/rdo-release-kilo.rpm
   curl http://trunk.rdoproject.org/centos7/delorean-deps.repo -o /etc/yum.repos.d/delorean-deps.repo
-  curl http://trunk.rdoproject.org/centos7/8b/ef/8befab055f74ee9e701e333585defcc022ee32cf_2e30451e/delorean.repo -o /etc/yum.repos.d/delorean.repo
+  curl http://trunk.rdoproject.org/centos7/current-tripleo/delorean.repo -o /etc/yum.repos.d/delorean.repo
 
   curl -o /etc/yum.repos.d/delorean-current.repo http://trunk.rdoproject.org/centos7/current/delorean.repo
   sed -i 's/\[delorean\]/\[delorean-current\]/' /etc/yum.repos.d/delorean-current.repo
@@ -19,6 +19,7 @@ instack_host_repos_cmd: |
 
   sed -i -e 's%priority=.*%priority=10%' /etc/yum.repos.d/delorean-current.repo
   sed -i -e 's%priority=.*%priority=20%' /etc/yum.repos.d/delorean.repo
+  sed -i -e 's%priority=.*%priority=30%' /etc/yum.repos.d/delorean-deps.repo
 
   yum -y install yum-plugin-priorities
   yum -y update
@@ -31,7 +32,7 @@ instack_uc_repos_cmd: |
   yum install -y http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
   yum install -y https://rdoproject.org/repos/openstack-kilo/rdo-release-kilo.rpm
   curl http://trunk.rdoproject.org/centos7/delorean-deps.repo -o /etc/yum.repos.d/delorean-deps.repo
-  curl http://trunk.rdoproject.org/centos7/8b/ef/8befab055f74ee9e701e333585defcc022ee32cf_2e30451e/delorean.repo -o /etc/yum.repos.d/delorean.repo
+  curl http://trunk.rdoproject.org/centos7/current-tripleo/delorean.repo -o /etc/yum.repos.d/delorean.repo
 
   curl -o /etc/yum.repos.d/delorean-current.repo http://trunk.rdoproject.org/centos7/current/delorean.repo
   sed -i 's/\[delorean\]/\[delorean-current\]/' /etc/yum.repos.d/delorean-current.repo
@@ -42,6 +43,7 @@ instack_uc_repos_cmd: |
 
   sed -i -e 's%priority=.*%priority=10%' /etc/yum.repos.d/delorean-current.repo
   sed -i -e 's%priority=.*%priority=20%' /etc/yum.repos.d/delorean.repo
+  sed -i -e 's%priority=.*%priority=30%' /etc/yum.repos.d/delorean-deps.repo
 
   yum -y install yum-plugin-priorities
   yum -y update
