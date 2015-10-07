@@ -108,6 +108,7 @@ instack_install_undercloud_cmd: |
   # workaround until we have https://review.openstack.org/#/c/228190
   sudo sed -ie 's|^connection = .*|connection = sqlite:////var/lib/ironic-inspector/inspector.sqlite|' /etc/ironic-inspector/inspector.conf
   sudo ironic-inspector-dbsync --config-file /etc/ironic-inspector/inspector.conf upgrade
+  sudo chown ironic-inspector /var/lib/ironic-inspector/inspector.sqlite
   sudo systemctl restart openstack-ironic-inspector
   sudo systemctl restart openstack-ironic-inspector-dnsmasq
 
