@@ -116,6 +116,10 @@ overcloud_images_build_cmd: |
   export DIB_REPOREF_puppet_cinder=0d1b1fa222338390ebd5a46e8ad7687d5dc300a3
 
   # workaround
+  sudo su -c "echo 'yum -y install yum-plugin-priorities' > /usr/share/diskimage-builder/elements/centos7/pre-install.d/02-yum-priorities"
+  sudo chmod a+x /usr/share/diskimage-builder/elements/centos7/pre-install.d/02-yum-priorities
+
+  # workaround
   sudo sed -ie 's|rpm -i /|rpm -i --replacepkgs /|' /usr/share/diskimage-builder/elements/redhat-common/pre-install.d/15-remove-grub
 
   openstack overcloud image build --all
