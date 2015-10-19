@@ -7,6 +7,6 @@
   args:
     chdir: "{{ stack_user_home }}"
     # don't rebuild
-    creates: "{{ stack_user_home }}/discovery-ramdisk.initramfs"
+    creates: "{{ stack_user_home }}/overcloud-full.qcow2"
   sudo: yes
   sudo_user: stack
