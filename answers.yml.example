@@ -83,8 +83,6 @@ instack_install_undercloud_cmd: |
 
   export DIB_INSTALLTYPE_puppet_modules=source
   export DIB_REPOLOCATION_puppet_ceph=https://git.openstack.org/openstack/puppet-ceph.git
-  export DIB_REPOLOCATION_puppet_heat=https://review.openstack.org/openstack/puppet-heat
-  export DIB_REPOREF_puppet_heat=refs/changes/66/232366/4
   export DIB_REPOREF_puppetlabs_concat=15ecb98dc3a551024b0b92c6aafdefe960a4596f
   export DIB_REPOREF_puppet_cinder=0d1b1fa222338390ebd5a46e8ad7687d5dc300a3
 
@@ -116,8 +114,6 @@ overcloud_images_build_cmd: |
 
   export DIB_INSTALLTYPE_puppet_modules=source
   export DIB_REPOLOCATION_puppet_ceph=https://git.openstack.org/openstack/puppet-ceph.git
-  export DIB_REPOLOCATION_puppet_heat=https://review.openstack.org/openstack/puppet-heat
-  export DIB_REPOREF_puppet_heat=refs/changes/66/232366/4
   export DIB_REPOREF_puppetlabs_concat=15ecb98dc3a551024b0b92c6aafdefe960a4596f
   export DIB_REPOREF_puppet_cinder=0d1b1fa222338390ebd5a46e8ad7687d5dc300a3
 
