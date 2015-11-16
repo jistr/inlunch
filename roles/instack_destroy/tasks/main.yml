@@ -1,5 +1,5 @@
 - name: register instack_vms
-  shell: virsh list --all | grep -E '( instack )|( baremetal_[0-9]+ )' | awk '{ print $2 }'
+  shell: virsh list --all | grep -E '( instack )|( baremetal.*_[0-9]+ )' | awk '{ print $2 }'
   changed_when: false
   register: instack_vms
 
