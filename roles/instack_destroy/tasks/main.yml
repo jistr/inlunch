@@ -10,7 +10,7 @@
 - name: destroy instack VMs
   shell: |
     virsh destroy {{ item }}
-    virsh undefine --remove-all-storage {{ item }}
+    virsh undefine {{ item }} --snapshots-metadata
   with_items: instack_vms.stdout_lines
 
 - name: register some_socat_forwarders_running
@@ -33,3 +33,4 @@
     - "{{ stack_user_home }}/instack.d"
     - "{{ stack_user_home }}/instack.qcow2"
     - "{{ stack_user_home }}/instackenv.json"
+    - "/home/libvirt-images"
