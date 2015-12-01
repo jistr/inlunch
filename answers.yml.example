@@ -68,6 +68,8 @@ instack_virt_setup_cmd: |
 
   instack-virt-setup
 
+instack_get_undercloud_ip: cat /var/lib/libvirt/dnsmasq/default.leases | grep $(tripleo get-vm-mac instack) | awk '{print $3;}' | head -n1
+
 instack_host_uc_http_port: 80
 instack_host_uc_ssh_port: 2200
 
