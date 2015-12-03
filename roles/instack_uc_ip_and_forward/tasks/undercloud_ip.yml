@@ -1,7 +1,10 @@
 - name: fetch undercloud VM IP address
-  shell: cat /var/lib/libvirt/dnsmasq/default.leases | grep $(tripleo get-vm-mac instack) | awk '{print $3;}' | head -n1
-  sudo_user: stack
-  sudo: yes
+  shell: |
+    if [ -e /var/lib/libvirt/dnsmasq/default.leases ]; then
+      cat /var/lib/libvirt/dnsmasq/default.leases | grep $(tripleo get-vm-mac instack) | awk '{print $3;}' | head -n1
+    else
+      virsh domifaddr instack | grep $(tripleo get-vm-mac instack) | awk '{print $4}' | sed 's/\/.*$//'
+    fi
   changed_when: false
   register: undercloud_ip
 
