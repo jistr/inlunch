@@ -82,21 +82,11 @@ instack_install_undercloud_cmd: |
   cp /usr/share/instack-undercloud/undercloud.conf.sample ~/undercloud.conf || true
 
   export DIB_INSTALLTYPE_puppet_modules=source
-  export DIB_REPOLOCATION_puppet_ceph=https://git.openstack.org/openstack/puppet-ceph.git
-  export DIB_REPOREF_puppetlabs_concat=15ecb98dc3a551024b0b92c6aafdefe960a4596f
-  export DIB_REPOREF_puppet_cinder=0d1b1fa222338390ebd5a46e8ad7687d5dc300a3
 
   # workaround
   export LC_TIME=en_US.UTF-8
 
   openstack undercloud install
-
-  # workaround until we have https://review.openstack.org/#/c/228190
-  sudo sed -ie 's|^connection = .*|connection = sqlite:////var/lib/ironic-inspector/inspector.sqlite|' /etc/ironic-inspector/inspector.conf
-  sudo ironic-inspector-dbsync --config-file /etc/ironic-inspector/inspector.conf upgrade
-  sudo chown ironic-inspector /var/lib/ironic-inspector/inspector.sqlite
-  sudo systemctl restart openstack-ironic-inspector
-  sudo systemctl restart openstack-ironic-inspector-dnsmasq
 
 
 ### IMAGES SETUP ###
@@ -112,17 +102,10 @@ overcloud_images_build_cmd: |
   export DIB_NO_TMPFS=1
   export DIB_YUM_REPO_CONF="/etc/yum.repos.d/delorean.repo /etc/yum.repos.d/delorean-current.repo /etc/yum.repos.d/delorean-deps.repo"
 
+  export USE_DELOREAN_TRUNK=1
+  export DELOREAN_TRUNK_REPO="http://trunk.rdoproject.org/centos7/current-tripleo/"
+  export DELOREAN_REPO_FILE="delorean.repo"
   export DIB_INSTALLTYPE_puppet_modules=source
-  export DIB_REPOLOCATION_puppet_ceph=https://git.openstack.org/openstack/puppet-ceph.git
-  export DIB_REPOREF_puppetlabs_concat=15ecb98dc3a551024b0b92c6aafdefe960a4596f
-  export DIB_REPOREF_puppet_cinder=0d1b1fa222338390ebd5a46e8ad7687d5dc300a3
-
-  # workaround
-  sudo su -c "echo 'yum -y install yum-plugin-priorities' > /usr/share/diskimage-builder/elements/centos7/pre-install.d/02-yum-priorities"
-  sudo chmod a+x /usr/share/diskimage-builder/elements/centos7/pre-install.d/02-yum-priorities
-
-  # workaround
-  sudo sed -ie 's|rpm -i /|rpm -i --replacepkgs /|' /usr/share/diskimage-builder/elements/redhat-common/pre-install.d/15-remove-grub
 
   openstack overcloud image build --all
 
