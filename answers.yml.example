@@ -67,6 +67,16 @@ instack_install_undercloud_cmd: |
 
   /home/stack/tripleo-common/scripts/tripleo.sh --undercloud
 
+  # workaround until the delorean pin pulled by tripleo.sh has
+  # https://review.openstack.org/#/c/250745/
+  pushd /tmp
+  curl -o ironic-pxe-fix.patch 'https://review.openstack.org/gitweb?p=openstack/ironic.git;a=patch;h=f968e1a22d3ed928278a04f0da9124678474ff0a'
+  popd
+  pushd /usr/lib/python2.7/site-packages/ironic
+  sudo patch -r /tmp/ironic-pxe-fix.rej -p2 /tmp/ironic-pxe-fix.patch
+  popd
+  sudo systemctl restart openstack-ironic-api openstack-ironic-conductor openstack-ironic-inspector openstack-ironic-inspector-dnsmasq
+
 
 ### IMAGES SETUP ###
 
