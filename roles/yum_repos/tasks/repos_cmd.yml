@@ -1,2 +1,4 @@
 - name: run the repo setup command
-  shell: "{{ instack_current_repos_cmd }}"
+  shell: |
+    set -exo pipefail
+    {{ instack_current_repos_cmd }}

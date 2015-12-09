@@ -2,17 +2,17 @@
   shell: echo "Stopping on user's request."; false
   when: stopping_point == 'before_instack_prepare_for_overcloud'
 
-- name: register glance_openstack_full_loaded
+- name: register prepare_for_overcloud_done
   shell: |
     source ./stackrc
-    glance image-list | grep overcloud-full
+    nova flavor-list | grep baremetal
   args:
     chdir: "{{ stack_user_home }}"
   sudo: yes
   sudo_user: stack
   changed_when: false
   failed_when: false
-  register: glance_openstack_full_loaded
+  register: prepare_for_overcloud_done
 
 - name: prepare for overcloud
   shell: |
@@ -24,4 +24,4 @@
     chdir: "{{ stack_user_home }}"
   sudo: yes
   sudo_user: stack
-  when: glance_openstack_full_loaded.rc != 0
+  when: prepare_for_overcloud_done.rc != 0

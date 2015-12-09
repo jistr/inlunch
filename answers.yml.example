@@ -3,29 +3,13 @@
 # dictionary (keys are repo names, values are base URLs)
 instack_host_repos_baseurls:
 
-# list of packages to get from delorean_current
-instack_delorean_current_pkgs: diskimage-builder,openstack-heat,instack,instack-undercloud,openstack-ironic,openstack-ironic-inspector,os-cloud-config,python-ironic-inspector-client,python-tripleoclient,tripleo-common,openstack-tripleo-heat-templates,openstack-tripleo-image-elements,openstack-tuskar-ui-extras,openstack-puppet-modules
-
 # bash snippet
 instack_host_repos_cmd: |
-  yum install -y http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
-  yum install -y https://rdoproject.org/repos/openstack-kilo/rdo-release-kilo.rpm
-  curl http://trunk.rdoproject.org/centos7/delorean-deps.repo -o /etc/yum.repos.d/delorean-deps.repo
-  curl http://trunk.rdoproject.org/liberty/centos7/current-passed-ci/delorean.repo -o /etc/yum.repos.d/delorean.repo
-  # curl http://trunk.rdoproject.org/centos7/current-tripleo/delorean.repo -o /etc/yum.repos.d/delorean.repo
+  yum -y install git
+  git clone https://github.com/openstack/tripleo-common /home/stack/tripleo-common
+  chown -R stack: /home/stack/tripleo-common
+  /home/stack/tripleo-common/scripts/tripleo.sh --repo-setup
 
-  curl -o /etc/yum.repos.d/delorean-current.repo http://trunk.rdoproject.org/centos7/current/delorean.repo
-  sed -i 's/\[delorean\]/\[delorean-current\]/' /etc/yum.repos.d/delorean-current.repo
-  /bin/bash -c 'cat <<EOF>>/etc/yum.repos.d/delorean-current.repo
-
-  includepkgs={{ instack_delorean_current_pkgs }}
-  EOF'
-
-  sed -i -e 's%priority=.*%priority=10%' /etc/yum.repos.d/delorean-current.repo
-  sed -i -e 's%priority=.*%priority=20%' /etc/yum.repos.d/delorean.repo
-  sed -i -e 's%priority=.*%priority=30%' /etc/yum.repos.d/delorean-deps.repo
-
-  yum -y install yum-plugin-priorities
   yum -y update
 
 # dictionary (keys are repo names, values are base URLs)
@@ -37,6 +21,7 @@ instack_uc_repos_cmd: "{{ instack_host_repos_cmd }}"
 ### TOOLS SETUP ###
 
 tools_packages:
+  - git
   - screen
   - tmux
   - vim
@@ -63,9 +48,6 @@ instack_virt_setup_cmd: |
   # workaround
   mkdir -p ~/.cache/tripleo/tripleo-incubator/scripts
 
-  # workaround
-  sudo sed -ie 's|rpm -i /|rpm -i --replacepkgs /|' /usr/share/diskimage-builder/elements/redhat-common/pre-install.d/15-remove-grub
-
   instack-virt-setup
 
 instack_host_uc_http_port: 80
@@ -77,16 +59,13 @@ instack_host_uc_ssh_port: 2200
 instack_uc_install_instack_undercloud_rpm: yes
 
 instack_install_undercloud_cmd: |
-  sudo yum install -y python-rdomanager-oscplugin
   export FACTER_fqdn=$(hostname -f)
   cp /usr/share/instack-undercloud/undercloud.conf.sample ~/undercloud.conf || true
-
-  export DIB_INSTALLTYPE_puppet_modules=source
 
   # workaround
   export LC_TIME=en_US.UTF-8
 
-  openstack undercloud install
+  /home/stack/tripleo-common/scripts/tripleo.sh --undercloud
 
 
 ### IMAGES SETUP ###
@@ -100,15 +79,8 @@ overcloud_images_prebuilt_dir: ../overcloud-images
 overcloud_images_build_cmd: |
   export NODE_DIST=centos7
   export DIB_NO_TMPFS=1
-  export DIB_YUM_REPO_CONF="/etc/yum.repos.d/delorean.repo /etc/yum.repos.d/delorean-current.repo /etc/yum.repos.d/delorean-deps.repo"
 
-  export DIB_INSTALLTYPE_puppet_modules=source
-
-  # workaround -- install required yum-plugin-priorities
-  echo -e '#!/bin/bash\nyum install -y yum-plugin-priorities' | sudo tee /usr/share/diskimage-builder/elements/yum/pre-install.d/99-tmphacks
-  sudo chmod +x /usr/share/diskimage-builder/elements/yum/pre-install.d/99-tmphacks
-
-  openstack overcloud image build --all
+  /home/stack/tripleo-common/scripts/tripleo.sh --overcloud-images
 
 
 ### OVERCLOUD PREPARATION ###
@@ -116,12 +88,9 @@ overcloud_images_build_cmd: |
 instack_prepare_for_overcloud_cmd: |
   source ./stackrc
 
-  openstack overcloud image upload
-  openstack baremetal import --json instackenv.json
-  openstack baremetal configure boot
-  openstack baremetal introspection bulk start
-  openstack flavor create --id auto --ram 4096 --disk 40 --vcpus 1 baremetal
-  openstack flavor set --property "cpu_arch"="x86_64" --property "capabilities:boot_option"="local" baremetal
+  /home/stack/tripleo-common/scripts/tripleo.sh --register-nodes
+  # /home/stack/tripleo-common/scripts/tripleo.sh --introspect-nodes
+  /home/stack/tripleo-common/scripts/tripleo.sh --flavors
 
   OVERCLOUD_DNS_SERVER=$(cat /etc/resolv.conf | grep nameserver | head -n1 | awk '{ print $2 }')
   CTLPLANE_SUBNET_ID=$(neutron subnet-list | grep '192.0.2.0/24' | awk '{ print $2 }')
