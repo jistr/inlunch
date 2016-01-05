@@ -6,7 +6,7 @@ instack_host_repos_baseurls:
 # bash snippet
 instack_host_repos_cmd: |
   yum -y install git
-  git clone https://github.com/openstack/tripleo-common /home/stack/tripleo-common
+  git clone https://github.com/openstack/tripleo-common /home/stack/tripleo-common || true
   chown -R stack: /home/stack/tripleo-common
   /home/stack/tripleo-common/scripts/tripleo.sh --repo-setup
 
@@ -73,7 +73,7 @@ instack_install_undercloud_cmd: |
   curl -o ironic-pxe-fix.patch 'https://review.openstack.org/gitweb?p=openstack/ironic.git;a=patch;h=f968e1a22d3ed928278a04f0da9124678474ff0a'
   popd
   pushd /usr/lib/python2.7/site-packages/ironic
-  sudo patch -r /tmp/ironic-pxe-fix.rej -p2 /tmp/ironic-pxe-fix.patch
+  sudo patch -r /tmp/ironic-pxe-fix.rej -p2 < /tmp/ironic-pxe-fix.patch
   popd
   sudo systemctl restart openstack-ironic-api openstack-ironic-conductor openstack-ironic-inspector openstack-ironic-inspector-dnsmasq
 
