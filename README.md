@@ -49,8 +49,9 @@ to deploy it on your workstation. (You'll still run
 ### Tricks for instack-virt.sh
 
 * After running `instack-virt.sh`, you can ssh to the host machine on
-  port 2200 (e.g. `ssh -p 2200 root@my_instack_host`) to reach the
-  undercloud VM directly.
+  port 2200 (e.g. `ssh -p 2200 stack@my_instack_host`) to reach the
+  undercloud VM directly. You can ssh as `root` user too, but most of
+  the time you'll want to work with the undercloud as `stack` user.
 
 * HTTP is forwarded from undercloud similarly as ssh. Pointing your
   browser to the host machine will let you access undercloud dashboard
