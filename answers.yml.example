@@ -78,7 +78,7 @@ instack_install_undercloud_cmd: |
   sudo systemctl restart openstack-ironic-api openstack-ironic-conductor openstack-ironic-inspector openstack-ironic-inspector-dnsmasq
 
   # workaround: use newer Heat than delorean pin because overcloud updates no longer get stuck with it
-  sudo yum -y install https://trunk.rdoproject.org/centos7/current/openstack-heat-api-6.0.0.0b2-dev168.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/current/openstack-heat-api-cfn-6.0.0.0b2-dev168.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/current/openstack-heat-common-6.0.0.0b2-dev168.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/current/openstack-heat-engine-6.0.0.0b2-dev168.el7.centos.noarch.rpm
+  sudo yum -y install https://trunk.rdoproject.org/centos7/62/fb/62fb2583f2d8f69eb355fa47988be2b8770b4925_fe57dba4/openstack-heat-api-6.0.0.0b2-dev183.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/62/fb/62fb2583f2d8f69eb355fa47988be2b8770b4925_fe57dba4/openstack-heat-api-cfn-6.0.0.0b2-dev183.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/62/fb/62fb2583f2d8f69eb355fa47988be2b8770b4925_fe57dba4/openstack-heat-common-6.0.0.0b2-dev183.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/62/fb/62fb2583f2d8f69eb355fa47988be2b8770b4925_fe57dba4/openstack-heat-engine-6.0.0.0b2-dev183.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/62/fb/62fb2583f2d8f69eb355fa47988be2b8770b4925_fe57dba4/openstack-heat-api-cloudwatch-6.0.0.0b2-dev183.el7.centos.noarch.rpm
   sudo systemctl restart openstack-heat-api-cfn.service openstack-heat-api.service openstack-heat-engine.service
 
 ### IMAGES SETUP ###
