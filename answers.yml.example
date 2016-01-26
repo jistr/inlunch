@@ -59,7 +59,11 @@ instack_host_uc_ssh_port: 2200
 instack_uc_install_instack_undercloud_rpm: yes
 
 instack_install_undercloud_cmd: |
+  # workaround: install mistral manually until we bump delorean
+  sudo yum install https://trunk.rdoproject.org/centos7/ef/60/ef602aaab58630c80dfe851eeadba5e46eea9193_9dfd2a02/openstack-mistral-all-2.0.0.0b3-dev1.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/ef/60/ef602aaab58630c80dfe851eeadba5e46eea9193_9dfd2a02/openstack-mistral-api-2.0.0.0b3-dev1.el7.centos.noarch.rpm  https://trunk.rdoproject.org/centos7/ef/60/ef602aaab58630c80dfe851eeadba5e46eea9193_9dfd2a02/openstack-mistral-common-2.0.0.0b3-dev1.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/ef/60/ef602aaab58630c80dfe851eeadba5e46eea9193_9dfd2a02/openstack-mistral-engine-2.0.0.0b3-dev1.el7.centos.noarch.rpm  https://trunk.rdoproject.org/centos7/ef/60/ef602aaab58630c80dfe851eeadba5e46eea9193_9dfd2a02/openstack-mistral-executor-2.0.0.0b3-dev1.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/ef/60/ef602aaab58630c80dfe851eeadba5e46eea9193_9dfd2a02/python-openstack-mistral-2.0.0.0b3-dev1.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/ef/60/ef602aaab58630c80dfe851eeadba5e46eea9193_9dfd2a02/python-mistralclient-1.2.1-dev17.el7.centos.noarch.rpm
+
   cp /usr/share/instack-undercloud/undercloud.conf.sample ~/undercloud.conf || true
+  sed -i -e 's/^.*enable_mistral = .*$/enable_mistral = true/' ~/undercloud.conf
 
   # workaround
   export FACTER_fqdn=$(hostname -f)
