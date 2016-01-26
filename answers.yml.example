@@ -59,11 +59,11 @@ instack_host_uc_ssh_port: 2200
 instack_uc_install_instack_undercloud_rpm: yes
 
 instack_install_undercloud_cmd: |
-  export FACTER_fqdn=$(hostname -f)
   cp /usr/share/instack-undercloud/undercloud.conf.sample ~/undercloud.conf || true
 
   # workaround
-  export LC_TIME=en_US.UTF-8
+  export FACTER_fqdn=$(hostname -f)
+  export LC_ALL=C
 
   /home/stack/tripleo-common/scripts/tripleo.sh --undercloud
 
