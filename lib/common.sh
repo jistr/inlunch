@@ -24,7 +24,7 @@ function get_hosts_file_path() {
         GENERATED_HOSTS_FILE="$DIR/tmp/hosts.$INLUNCH_FQDN"
         cp "$1" "$GENERATED_HOSTS_FILE"
         echo -e "\n$TEMPORARY_HOSTS_BANNER" >> "$GENERATED_HOSTS_FILE"
-        sed -ie "s/my_instack_machine.example.org/$INLUNCH_FQDN/g" "$GENERATED_HOSTS_FILE"
+        sed -i -e "s/my_instack_machine.example.org/$INLUNCH_FQDN/g" "$GENERATED_HOSTS_FILE"
         echo "$GENERATED_HOSTS_FILE"
     else
         echo "${INLUNCH_HOSTS:-hosts.instack-virt}"
