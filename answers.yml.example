@@ -59,9 +59,6 @@ instack_host_uc_ssh_port: 2200
 instack_uc_install_instack_undercloud_rpm: yes
 
 instack_install_undercloud_cmd: |
-  # workaround: install mistral manually until we bump delorean
-  sudo yum -y install https://trunk.rdoproject.org/centos7/ef/60/ef602aaab58630c80dfe851eeadba5e46eea9193_9dfd2a02/openstack-mistral-all-2.0.0.0b3-dev1.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/ef/60/ef602aaab58630c80dfe851eeadba5e46eea9193_9dfd2a02/openstack-mistral-api-2.0.0.0b3-dev1.el7.centos.noarch.rpm  https://trunk.rdoproject.org/centos7/ef/60/ef602aaab58630c80dfe851eeadba5e46eea9193_9dfd2a02/openstack-mistral-common-2.0.0.0b3-dev1.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/ef/60/ef602aaab58630c80dfe851eeadba5e46eea9193_9dfd2a02/openstack-mistral-engine-2.0.0.0b3-dev1.el7.centos.noarch.rpm  https://trunk.rdoproject.org/centos7/ef/60/ef602aaab58630c80dfe851eeadba5e46eea9193_9dfd2a02/openstack-mistral-executor-2.0.0.0b3-dev1.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/ef/60/ef602aaab58630c80dfe851eeadba5e46eea9193_9dfd2a02/python-openstack-mistral-2.0.0.0b3-dev1.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/ef/60/ef602aaab58630c80dfe851eeadba5e46eea9193_9dfd2a02/python-mistralclient-1.2.1-dev17.el7.centos.noarch.rpm
-
   cp /usr/share/instack-undercloud/undercloud.conf.sample ~/undercloud.conf || true
   sed -i -e 's/^.*enable_mistral = .*$/enable_mistral = true/' ~/undercloud.conf
 
@@ -70,20 +67,6 @@ instack_install_undercloud_cmd: |
   export LC_ALL=C
 
   /home/stack/tripleo-common/scripts/tripleo.sh --undercloud
-
-  # workaround until the delorean pin pulled by tripleo.sh has
-  # https://review.openstack.org/#/c/250745/
-  pushd /tmp
-  curl -o ironic-pxe-fix.patch 'https://review.openstack.org/gitweb?p=openstack/ironic.git;a=patch;h=f968e1a22d3ed928278a04f0da9124678474ff0a'
-  popd
-  pushd /usr/lib/python2.7/site-packages/ironic
-  sudo patch -r /tmp/ironic-pxe-fix.rej -p2 < /tmp/ironic-pxe-fix.patch
-  popd
-  sudo systemctl restart openstack-ironic-api openstack-ironic-conductor openstack-ironic-inspector openstack-ironic-inspector-dnsmasq
-
-  # workaround: use newer Heat than delorean pin because overcloud updates no longer get stuck with it
-  sudo yum -y install https://trunk.rdoproject.org/centos7/62/fb/62fb2583f2d8f69eb355fa47988be2b8770b4925_fe57dba4/openstack-heat-api-6.0.0.0b2-dev183.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/62/fb/62fb2583f2d8f69eb355fa47988be2b8770b4925_fe57dba4/openstack-heat-api-cfn-6.0.0.0b2-dev183.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/62/fb/62fb2583f2d8f69eb355fa47988be2b8770b4925_fe57dba4/openstack-heat-common-6.0.0.0b2-dev183.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/62/fb/62fb2583f2d8f69eb355fa47988be2b8770b4925_fe57dba4/openstack-heat-engine-6.0.0.0b2-dev183.el7.centos.noarch.rpm https://trunk.rdoproject.org/centos7/62/fb/62fb2583f2d8f69eb355fa47988be2b8770b4925_fe57dba4/openstack-heat-api-cloudwatch-6.0.0.0b2-dev183.el7.centos.noarch.rpm
-  sudo systemctl restart openstack-heat-api-cfn.service openstack-heat-api.service openstack-heat-engine.service
 
 ### IMAGES SETUP ###
 
