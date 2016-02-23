@@ -68,6 +68,14 @@ instack_install_undercloud_cmd: |
 
   /home/stack/tripleo-common/scripts/tripleo.sh --undercloud
 
+  # reduce undercloud memory footprint
+  sudo crudini --set /etc/heat/heat.conf DEFAULT num_engine_workers 2
+  sudo crudini --set /etc/nova/nova.conf DEFAULT osapi_compute_workers 1
+  sudo crudini --set /etc/nova/nova.conf DEFAULT metadata_workers 1
+  sudo crudini --set /etc/nova/nova.conf conductor workers 1
+  sudo systemctl restart openstack-heat-engine openstack-nova-api openstack-nova-conductor
+
+
 ### IMAGES SETUP ###
 
 # Valid values are 'none', 'prebuilt', 'build'
