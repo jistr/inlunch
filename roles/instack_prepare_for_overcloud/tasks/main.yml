@@ -5,7 +5,7 @@
 - name: register prepare_for_overcloud_done
   shell: |
     source ./stackrc
-    nova flavor-list | grep baremetal
+    ironic node-list | wc -l | grep available
   args:
     chdir: "{{ stack_user_home }}"
   sudo: yes
