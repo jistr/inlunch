@@ -88,9 +88,6 @@ overcloud_images_build_cmd: |
   export NODE_DIST=centos7
   export DIB_NO_TMPFS=1
 
-  # pin for https://bugs.launchpad.net/tripleo/+bug/1524381
-  export DIB_REPOREF_puppet_swift=b62ed3a5ca4ce2bae45780d4981a5b49fde9f2af
-
   /home/stack/tripleo-common/scripts/tripleo.sh --overcloud-images
 
 
