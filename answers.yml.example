@@ -63,6 +63,9 @@ instack_install_undercloud_cmd: |
   sed -i -e 's/^.*enable_mistral = .*$/enable_mistral = true/' ~/undercloud.conf
 
   # workaround
+  sudo yum -y install python-mistralclient
+
+  # workaround
   export FACTER_fqdn=$(hostname -f)
   export LC_ALL=C
 
