@@ -40,8 +40,8 @@ instack_virt_setup_cmd: |
   export NODE_DIST=centos7
 
   export NODE_CPU=2
-  export UNDERCLOUD_NODE_MEM=6000
-  export NODE_MEM=4400
+  export UNDERCLOUD_NODE_MEM=7000
+  export NODE_MEM=5000
 
   export NODE_COUNT=6
 
