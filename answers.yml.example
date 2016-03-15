@@ -7,8 +7,10 @@ instack_host_repos_baseurls:
 instack_host_repos_cmd: |
   yum -y install git
   git clone https://github.com/openstack/tripleo-common /home/stack/tripleo-common || true
+  git clone https://github.com/openstack-infra/tripleo-ci /home/stack/tripleo-ci || true
   chown -R stack: /home/stack/tripleo-common
-  /home/stack/tripleo-common/scripts/tripleo.sh --repo-setup
+  chown -R stack: /home/stack/tripleo-ci
+  /home/stack/tripleo-ci/scripts/tripleo.sh --repo-setup
 
   yum -y update
 
@@ -69,7 +71,7 @@ instack_install_undercloud_cmd: |
   export FACTER_fqdn=$(hostname -f)
   export LC_ALL=C
 
-  /home/stack/tripleo-common/scripts/tripleo.sh --undercloud
+  /home/stack/tripleo-ci/scripts/tripleo.sh --undercloud
 
   # reduce undercloud memory footprint
   sudo crudini --set /etc/heat/heat.conf DEFAULT num_engine_workers 2
@@ -91,7 +93,7 @@ overcloud_images_build_cmd: |
   export NODE_DIST=centos7
   export DIB_NO_TMPFS=1
 
-  /home/stack/tripleo-common/scripts/tripleo.sh --overcloud-images
+  /home/stack/tripleo-ci/scripts/tripleo.sh --overcloud-images
 
 
 ### OVERCLOUD PREPARATION ###
@@ -99,8 +101,8 @@ overcloud_images_build_cmd: |
 instack_prepare_for_overcloud_cmd: |
   source ./stackrc
 
-  /home/stack/tripleo-common/scripts/tripleo.sh --register-nodes
-  # /home/stack/tripleo-common/scripts/tripleo.sh --introspect-nodes
+  /home/stack/tripleo-ci/scripts/tripleo.sh --register-nodes
+  # /home/stack/tripleo-ci/scripts/tripleo.sh --introspect-nodes
 
   OVERCLOUD_DNS_SERVER=$(cat /etc/resolv.conf | grep nameserver | head -n1 | awk '{ print $2 }')
   CTLPLANE_SUBNET_ID=$(neutron subnet-list | grep '192.0.2.0/24' | awk '{ print $2 }')
