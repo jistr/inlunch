@@ -11,10 +11,14 @@ Start up
   remotely using ssh.
 
   ```bash
+  rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-6.noarch.rpm 
   sudo yum -y install git ansible
-  git clone https://github.com/rdo-management/inlunch
+  git clone https://github.com/jistr/inlunch
   cd inlunch
   ```
+  In case of using Inlunch in the same physical node in which the
+  undercloud will be deployed, add the public key of the current
+  user to his authorized_hosts file.
 
 instack-virt.sh
 ---------------
@@ -66,3 +70,28 @@ to deploy it on your workstation. (You'll still run
   ```bash
   INLUNCH_ANSWERS=my_answers.yml INLUNCH_FQDN=my_machine.example.org ./instack-virt.sh
   ```
+
+### Deploying an overcloud
+  
+* After installing the undercloud an overcloud might be deployed.
+
+  Clone the tripleo-heat-templates repository if used THT from sources:
+  
+    ```bash
+  git clone https://github.com/openstack/tripleo-heat-templates
+  ```
+  Then deploy the overcloud:
+  
+  ```bash
+  openstack overcloud deploy \
+  --libvirt-type qemu \
+  --ntp-server pool.ntp.org \
+  --templates /home/stack/tripleo-heat-templates \
+  -e /home/stack/tripleo-heat-templates/overcloud-resource-registry-puppet.yaml \
+  -e /home/stack/tripleo-heat-templates/environments/puppet-pacemaker.yaml
+  ```
+  Note that this overcloud deployment uses the tripleo-heat-templates repository
+  from sources. So forth the repository must be cloned first.
+
+  For further information related to how to deploy tripleo, refer
+  to [tripleo.org](http://www.tripleo.org) official documentation website.
