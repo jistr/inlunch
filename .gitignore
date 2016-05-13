@@ -2,8 +2,7 @@
 /hosts.instack-only-uc
 /answers.yml
 
-/instack-only-uc
-
 /overcloud-images/*
 !/overcloud-images/.gitkeep
+/playbooks/*.retry
 /tmp
