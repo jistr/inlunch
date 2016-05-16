@@ -11,7 +11,7 @@
   shell: |
     virsh destroy {{ item }}
     virsh undefine {{ item }} --snapshots-metadata
-  with_items: instack_vms.stdout_lines
+  with_items: '{{ instack_vms.stdout_lines }}'
 
 - name: register some_socat_forwarders_running
   shell: ps aux | grep socat | grep -v grep

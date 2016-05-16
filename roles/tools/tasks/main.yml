@@ -2,4 +2,4 @@
   yum:
     name: "{{ item }}"
     state: present
-  with_items: tools_packages
+  with_items: "{{ tools_packages }}"
