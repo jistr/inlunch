@@ -1,0 +1,134 @@
+### REPO SETUP ###
+
+# dictionary (keys are repo names, values are base URLs)
+instack_host_repos_baseurls:
+
+# bash snippet
+instack_host_repos_cmd: |
+  yum -y install git
+  git clone https://github.com/openstack/tripleo-common /home/stack/tripleo-common || true
+  git clone https://github.com/openstack-infra/tripleo-ci /home/stack/tripleo-ci || true
+  chown -R stack: /home/stack/tripleo-common
+  chown -R stack: /home/stack/tripleo-ci
+  /home/stack/tripleo-ci/scripts/tripleo.sh --repo-setup
+
+  yum -y update
+
+# dictionary (keys are repo names, values are base URLs)
+instack_uc_repos_baseurls:
+
+# bash snippet
+instack_uc_repos_cmd: |
+  export STABLE_RELEASE=liberty
+
+  yum -y install git
+  git clone https://github.com/openstack/tripleo-common /home/stack/tripleo-common || true
+  git clone https://github.com/openstack-infra/tripleo-ci /home/stack/tripleo-ci || true
+  chown -R stack: /home/stack/tripleo-common
+  chown -R stack: /home/stack/tripleo-ci
+  /home/stack/tripleo-ci/scripts/tripleo.sh --repo-setup
+
+  yum -y update
+
+### TOOLS SETUP ###
+
+tools_packages:
+  - git
+  - screen
+  - tmux
+  - vim
+
+
+### HOST SETUP ###
+
+# if set to an existing pool (e.g. 'default')
+# then the pool location will not move
+instack_host_libvirt_storage_pool: instack
+instack_host_libvirt_storage_path: /home/vms-instack
+
+instack_host_install_instack_undercloud_rpm: yes
+
+instack_virt_setup_cmd: |
+  export NODE_DIST=centos7
+
+  export NODE_CPU=2
+  export UNDERCLOUD_NODE_MEM=8000
+  export NODE_MEM=5000
+
+  export NODE_COUNT=6
+
+  # workaround
+  mkdir -p ~/.cache/tripleo/tripleo-incubator/scripts
+
+  instack-virt-setup
+
+instack_host_uc_http_port: 80
+instack_host_uc_ssh_port: 2200
+
+
+### UNDERCLOUD SETUP ###
+
+instack_uc_install_instack_undercloud_rpm: yes
+
+instack_install_undercloud_cmd: |
+  export STABLE_RELEASE=liberty
+
+  # workaround
+  export FACTER_fqdn=$(hostname -f)
+  export LC_ALL=C
+
+  /home/stack/tripleo-ci/scripts/tripleo.sh --undercloud
+
+  # reduce undercloud memory footprint
+  sudo crudini --set /etc/heat/heat.conf DEFAULT num_engine_workers 2
+  sudo crudini --set /etc/nova/nova.conf DEFAULT osapi_compute_workers 1
+  sudo crudini --set /etc/nova/nova.conf DEFAULT metadata_workers 1
+  sudo crudini --set /etc/nova/nova.conf conductor workers 1
+  sudo systemctl restart openstack-heat-engine openstack-nova-api openstack-nova-conductor
+
+
+### IMAGES SETUP ###
+
+# Valid values are 'none', 'prebuilt', 'build'
+overcloud_images_source: build
+
+# The path is relative to the playbooks directory. Absolute path works too.
+overcloud_images_prebuilt_dir: ../overcloud-images
+
+overcloud_images_build_cmd: |
+  export STABLE_RELEASE=liberty
+  export FS_TYPE=ext4
+
+  export NODE_DIST=centos7
+  export DIB_NO_TMPFS=1
+
+  /home/stack/tripleo-ci/scripts/tripleo.sh --overcloud-images
+
+
+### OVERCLOUD PREPARATION ###
+
+instack_prepare_for_overcloud_cmd: |
+  export STABLE_RELEASE=liberty
+
+  source ./stackrc
+
+  /home/stack/tripleo-ci/scripts/tripleo.sh --register-nodes
+  # /home/stack/tripleo-ci/scripts/tripleo.sh --introspect-nodes
+
+  OVERCLOUD_DNS_SERVER=$(cat /etc/resolv.conf | grep nameserver | head -n1 | awk '{ print $2 }')
+  CTLPLANE_SUBNET_ID=$(neutron subnet-list | grep '192.0.2.0/24' | awk '{ print $2 }')
+  neutron subnet-update "$CTLPLANE_SUBNET_ID" --dns-nameserver "$OVERCLOUD_DNS_SERVER"
+
+
+### STOPPING POINTS ###
+
+# if you want to terminate the run early at a specified point, set the
+# stopping_point to one of these values:
+#   after_instack_libvirt_storage
+#   before_instack_virt_setup
+#   after_instack_virt_setup
+#   after_undercloud_forwarding
+#   before_instack_install_undercloud
+#   before_instack_build_images
+#   before_instack_prepare_for_overcloud
+stopping_point:
