@@ -7,7 +7,9 @@ instack_host_repos_baseurls:
 instack_host_repos_cmd: |
   yum -y install git
   git clone https://github.com/openstack/tripleo-common /home/stack/tripleo-common || true
+  pushd /home/stack/tripleo-common && git pull --ff-only origin master && popd
   git clone https://github.com/openstack-infra/tripleo-ci /home/stack/tripleo-ci || true
+  pushd /home/stack/tripleo-ci && git pull --ff-only origin master && popd
   chown -R stack: /home/stack/tripleo-common
   chown -R stack: /home/stack/tripleo-ci
   /home/stack/tripleo-ci/scripts/tripleo.sh --repo-setup
