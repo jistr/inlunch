@@ -33,4 +33,7 @@
     - "{{ stack_user_home }}/instack.d"
     - "{{ stack_user_home }}/instack.qcow2"
     - "{{ stack_user_home }}/instackenv.json"
-    - "/home/libvirt-images"
+    - /home/libvirt-images
+    - /etc/yum.repos.d/delorean.repo
+    - /etc/yum.repos.d/delorean-current.repo
+    - /etc/yum.repos.d/delorean-deps.repo
