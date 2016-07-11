@@ -25,6 +25,7 @@ instack_uc_repos_cmd: "{{ instack_host_repos_cmd }}"
 ### TOOLS SETUP ###
 
 tools_packages:
+  - crudini
   - git
   - screen
   - tmux
