@@ -5,7 +5,7 @@ instack_host_repos_baseurls: {}
 
 # bash snippet
 instack_host_repos_cmd: |
-  yum -y install git
+  yum -y install git yum-utils
   git clone https://github.com/openstack/tripleo-common /home/stack/tripleo-common || true
   pushd /home/stack/tripleo-common && git pull --ff-only origin master && popd
   git clone https://github.com/openstack-infra/tripleo-ci /home/stack/tripleo-ci || true
