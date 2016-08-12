@@ -1,7 +1,7 @@
 ### REPO SETUP ###
 
 # dictionary (keys are repo names, values are base URLs)
-instack_host_repos_baseurls:
+instack_host_repos_baseurls: {}
 
 # bash snippet
 instack_host_repos_cmd: |
@@ -17,7 +17,7 @@ instack_host_repos_cmd: |
   yum -y update
 
 # dictionary (keys are repo names, values are base URLs)
-instack_uc_repos_baseurls:
+instack_uc_repos_baseurls: {}
 
 # bash snippet
 instack_uc_repos_cmd: "{{ instack_host_repos_cmd }}"
