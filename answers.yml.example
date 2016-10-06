@@ -44,11 +44,12 @@ instack_host_install_instack_undercloud_rpm: yes
 instack_virt_setup_cmd: |
   export NODE_DIST=centos7
 
-  export NODE_CPU=2
-  export UNDERCLOUD_NODE_MEM=8000
-  export NODE_MEM=5000
+  # instack-virt-setup has good defaults now
+  # export NODE_CPU=2
+  # export UNDERCLOUD_NODE_MEM=8000
+  # export NODE_MEM=6000
 
-  export NODE_COUNT=6
+  export NODE_COUNT=8
 
   # workaround
   mkdir -p ~/.cache/tripleo/tripleo-incubator/scripts
