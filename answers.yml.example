@@ -5,6 +5,8 @@ instack_host_repos_baseurls: {}
 
 # bash snippet
 instack_host_repos_cmd: |
+  export TRIPLEO_ROOT=/home/stack
+
   yum -y install git yum-utils
   git clone https://github.com/openstack/tripleo-common /home/stack/tripleo-common || true
   pushd /home/stack/tripleo-common && git pull --ff-only origin master && popd
@@ -65,6 +67,7 @@ instack_host_uc_ssh_port: 2200
 instack_uc_install_instack_undercloud_rpm: yes
 
 instack_install_undercloud_cmd: |
+  export TRIPLEO_ROOT=/home/stack
   # workaround
   export FACTER_fqdn=$(hostname -f)
   export LC_ALL=C
@@ -88,6 +91,7 @@ overcloud_images_source: build
 overcloud_images_prebuilt_dir: ../overcloud-images
 
 overcloud_images_build_cmd: |
+  export TRIPLEO_ROOT=/home/stack
   export NODE_DIST=centos7
   export DIB_NO_TMPFS=1
 
@@ -97,6 +101,7 @@ overcloud_images_build_cmd: |
 ### OVERCLOUD PREPARATION ###
 
 instack_prepare_for_overcloud_cmd: |
+  export TRIPLEO_ROOT=/home/stack
   source ./stackrc
 
   /home/stack/tripleo-ci/scripts/tripleo.sh --register-nodes
