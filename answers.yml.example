@@ -108,7 +108,7 @@ instack_prepare_for_overcloud_cmd: |
   # /home/stack/tripleo-ci/scripts/tripleo.sh --introspect-nodes
 
   OVERCLOUD_DNS_SERVER=$(cat /etc/resolv.conf | grep nameserver | head -n1 | awk '{ print $2 }')
-  CTLPLANE_SUBNET_ID=$(neutron subnet-list | grep '192.0.2.0/24' | awk '{ print $2 }')
+  CTLPLANE_SUBNET_ID=$(neutron subnet-list | grep '192.168.24.0/24' | awk '{ print $2 }')
   neutron subnet-update "$CTLPLANE_SUBNET_ID" --dns-nameserver "$OVERCLOUD_DNS_SERVER"
 
 
